@@ -5,3 +5,5 @@ const People=Sequelize.define('people',{
 	email:{type: Sequelize.STRING,allowNull:false,unique:true,validate:{isEmail: true}},
 	phone:{type:Sequalize.BIGINT(10),validate:{isNumeric:true}}
 })
+
+module.exports = {People}
