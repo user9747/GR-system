@@ -1,14 +1,17 @@
-const People = require('./people')
+module.exports = (sequelize, DataTypes) => {
+	const User=sequelize.define('user',{
+		user_id:{ type: DataTypes.STRING, primaryKey: true ,allowNull:false},
+		people_id:{type: DataTypes.STRING,allowNull:false,unique:true},
+		user_name:{type: DataTypes.STRING,allowNull:false,unique:true,validate:{isAlphanumeric: true}},
+		password:{type: DataTypes.STRING,allowNull:false,unique:true}
+	})
 
-const User=Sequelize.define('user',{
-	user_id:{ type: Sequelize.STRING, primaryKey: true ,allowNull:false},
-	people_id:{type: Sequelize.STRING,allowNull:false,unique:true},
-	user_name:{type: Sequelize.STRING,allowNull:false,unique:true,validate:{isAlphanumeric: true}},
-	password:{type: Sequelize.STRING,allowNull:false,unique:true}
-})
+	User.associate = (models) => {
+		User.belongsTo(models.people,{
+			foreignKey: 'people_id'
+		})
+		
+	}
 
-User.belongsTo(People,{
-	foreignKey: 'people_id'
-})
-
-module.exports = {User}
+	return User
+}

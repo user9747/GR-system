@@ -1,26 +1,27 @@
-const User = require('./user')
-const Cell = require('./cell')
+module.exports = (sequelize, DataTypes) => {
+	const Grievance = sequelize.define('grievance',{
+		grievance_id:{type: DataTypes.STRING, primaryKey: true ,allowNull:false},
+		title:{type:DataTypes.STRING,allowNull:false},
+		description:{type:DataTypes.STRING,allowNull:false},
+		date_created:{type:DataTypes.DATEONLY,allowNull:false},
+		user_id:{ type: DataTypes.STRING ,allowNull:false},
+		cell_id:{ type: DataTypes.STRING ,allowNull:true},
+		status:{ type: DataTypes.STRING, allowNull:false},
+		remark:{ type: DataTypes.BLOB, allowNull:true},
+		resolve_date:{type:DataTypes.DATEONLY,allowNull:true},
+		category:{ type: DataTypes.STRING ,allowNull:false},
+		token:{type: DataTypes.STRING,allowNull:false,unique:true,validate:{isAlphanumeric: true}}
+	})	
 
-const Grievance = Sequelize.define('grievance',{
-	grievance_id:{type: Sequelize.STRING, primaryKey: true ,allowNull:false,autoIncrement:true},
-	title:{type:Sequelize.STRING,allowNull:false},
-	description:{type:Sequelize.STRING,allowNull:false},
-	date_created:{type:Sequelize.DATEONLY,allowNull:false},
-	user_id:{ type: Sequelize.STRING ,allowNull:false},
-	cell_id:{ type: Sequelize.STRING ,allowNull:true},
-	status:{ type: Sequelize.STRING, allowNull:false},
-	remark:{ type: Sequelize.BLOB, allowNull:true},
-	resolve_date:{type:Sequelize.DATEONLY,allowNull:true},
-	category:{ type: Sequelize.STRING ,allowNull:false},
-	token:{type: Sequelize.STRING,allowNull:false,unique:true,validate:{isAlphanumeric: true}}
-})
+	Grievance.associate = (models) => {
+		Grievance.belongsTo(models.user, {
+			foreignKey: 'user_id'
+		})
+		
+		Grievance.belongsTo(models.cell, {
+			foreignKey: 'cell_id'
+		})
+	}
 
-Grievance.belongsTo(User, {
-	foreignKey: 'user_id'
-})
-
-Cell.belongsTo(Cell, {
-	foreignKey: 'cell_id'
-})
-
-module.exports = {Grievance}
+	return Grievance
+}

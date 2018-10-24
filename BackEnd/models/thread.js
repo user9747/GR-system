@@ -1,15 +1,16 @@
-const Grievance = require('./grievance')
+module.exports = (sequelize, DataTypes) =>{
+    const Thread = sequelize.define('thread',{
+        grievance_id:{type: DataTypes.STRING,allowNull:false},
+        title:{type: DataTypes.STRING,allowNull:false},
+        description:{type:DataTypes.STRING,allowNull:false},
+        date_created:{type:DataTypes.DATEONLY,allowNull:false},
+    })
 
-const Thread = Sequelize.define('thread',{
-    grievance_id:{type: Sequelize.STRING,allowNull:false},
-    title:{type: Sequelize.STRING,allowNull:false},
-    description:{type:Sequelize.STRING,allowNull:false},
-    date_created:{type:Sequelize.DATEONLY,allowNull:false},
-})
+    Thread.associate = (models)=>{
+        Thread.belongsTo(models.grievance, {
+            foreignKey: 'grievance_id'
+        })
+    }
 
-
-Grievance.belongsTo(Grievance, {
-	foreignKey: 'grievance_id'
-})
-
-module.exports = {Thread}
+    return Thread
+}

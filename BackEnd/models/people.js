@@ -1,9 +1,11 @@
-const People=Sequelize.define('people',{
-	people_id:{type: Sequelize.STRING, primaryKey: true ,allowNull:false},
-	name:{type: Sequelize.STRING,allowNull:false},
-	role:{type: Sequelize.ENUM('user', 'cell',),allowNull:false},
-	email:{type: Sequelize.STRING,allowNull:false,unique:true,validate:{isEmail: true}},
-	phone:{type:Sequalize.BIGINT(10),validate:{isNumeric:true}}
-})
+module.exports = (sequelize, DataTypes) => {
+	const People=sequelize.define('people',{
+		people_id:{type: DataTypes.STRING, primaryKey: true ,allowNull:false},
+		name:{type: DataTypes.STRING,allowNull:false},
+		role:{type: DataTypes.ENUM('user', 'cell',),allowNull:false},
+		email:{type: DataTypes.STRING,allowNull:false,unique:true,validate:{isEmail: true}},
+		phone:{type:DataTypes.BIGINT(10),validate:{isNumeric:true}}
+	})
 
-module.exports = {People}
+	return People
+}
