@@ -46,6 +46,22 @@ router.post('/register', function(req, res, next){
     })
     .catch((err) => {
         console.log("Error caught inside register route");
+        if(err.message == "No student"){
+            return res.json({
+                'success': false,
+                'message': 'Incorrect admission number'
+            })
+        }else if(err.message == "Validation error"){
+            return res.json({
+                'success': false,
+                'message': 'username already taken'
+            })
+        }else if(err.message = "Account exists for the admission number"){
+            return res.json({
+                'success': false,
+                "message": "Account exists for the admission number"
+            })
+        }
         return res.json({
             'success': false,
             'message': 'An error has occurred'

@@ -22,6 +22,9 @@ userMethods.addUser = (info)=>{
                 if(err === null){
                     studentMethods.getStudentByAdmNo(info.admNo)
                     .then((student) => {
+                        if(!student){
+                            reject(new Error("No student"))
+                        }
                         
                         bcrypt.hash(info.password, 10)
                         .then((hashPass) => {
@@ -33,15 +36,31 @@ userMethods.addUser = (info)=>{
                                 password: hashPass
                             }
                             console.log(userinfo)
-                            model.create(userinfo)
-                            .then((user) => {
-                                console.log("Inside user methods\nSuccessfully created user");
-                                
-                                resolve(user)
+                            model.findOne({
+                                where: {
+                                    'people_id': student.people_id
+                                }
+                            }).
+                            then((existingUser) => {
+                                if(existingUser){
+                                    console.log("User already exists")
+                                    reject(new Error("Account exists for the admission number"))
+                                }
+                                model.create(userinfo)
+                                .then((user) => {
+                                    console.log("Inside user methods\nSuccessfully created user");
+                                    
+                                    resolve(user)
+                                })
+                                .catch((err) => {
+                                    console.log("Inside userMethods\nError caught inside create "+err.message);                            
+                                    reject(err)
+                                })
                             })
                             .catch((err) => {
-                                console.log("Inside userMethods\nError caught inside create "+err.message);                            
-                                reject(err)
+                                console.log("Inside userMethods\n error caught at existing user "+err.message);
+                                reject(err);
+                                
                             })
                         })
                         .catch((err) => {

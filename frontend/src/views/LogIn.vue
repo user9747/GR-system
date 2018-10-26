@@ -46,7 +46,7 @@
     },
     data: () => ({
       form: {
-        userName:null,
+        username:null,
         password:null,
       },
 
