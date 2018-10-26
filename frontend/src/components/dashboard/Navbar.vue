@@ -9,18 +9,17 @@
         </div>
 
         <div class="md-toolbar-section-end">
-          <md-button @click="route('login')">
+          <md-button v-if="!$store.getters.isLoggedIn" @click="route('login')">
             Login
           </md-button>
 
-          <md-button @click="route('signup')">
+          <md-button v-if="!$store.getters.isLoggedIn" @click="route('signup')">
             Sign Up
           </md-button>
 
-          <md-button @click="logout">
+          <md-button v-if="$store.getters.isLoggedIn" @click="logout">
             Logout
           </md-button>
-         <md-avatar class="md-avatar-icon md-accent md-large">AA</md-avatar>
 
         </div>
       </div>
@@ -49,7 +48,9 @@ export default {
   		this.$router.push('/'+r);
   	},
   	logout:function(){
-  		console.log("logging out...");
+      console.log("logging out...");
+      this.$store.dispatch('logout')
+      this.$router.push('/')
   	}
   }
 }

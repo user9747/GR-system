@@ -9,9 +9,8 @@ router.post('/login', function (req, res, next) {
 
     passport.authenticate('local', {session: false}, (err, user, info) => {
         if (err || !user) {
-            return res.status(400).json({
-                message: 'Something is not right',
-                user   : user
+            return res.json({
+                error: info.message
             })
         }
 
@@ -25,7 +24,7 @@ router.post('/login', function (req, res, next) {
            const token = jwt.sign(user.toJSON(), 'poda_albine_and_akhile_and_bilale')         
            return res.json({
                'username': user.user_name,
-                'JWT token': token
+                'token': token
             })
         })
     })(req, res)
