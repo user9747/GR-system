@@ -1,14 +1,13 @@
 <template>
   <div>
-    <Navbar/>
     <form novalidate class="md-layout md-alignment-space-around-center" style="padding-top: 3vh">
-      <md-card class="md-layout-item md-size-70  ">
+      <md-card class="md-layout-item ">
         <md-card-header>
-          <div class="md-title">Sign Up</div>
+          <div class="md-title"><strong>Register</strong></div>
         </md-card-header>
 
         <md-card-content class="md-layout md-alignment-space-around-center">
-          <md-field v-bind:class="{ 'md-invalid': error.userErr }" class="md-layout-item md-size-70  ">
+          <md-field v-bind:class="{ 'md-invalid': error.userErr }" class="md-layout-item ">
             <label for="email">User Name</label>
             <md-input type="email" name="email" id="email" autocomplete="email" v-model="form.userName"/>
            <!--  <span class="md-error" v-if="!$v.form.email.required">The email is required</span>
@@ -19,7 +18,7 @@
         </md-card-content>
 
         <md-card-content class="md-layout md-alignment-space-around-center" >
-          <md-field  v-bind:class="{ 'md-invalid': error.admNumErr}" class="md-layout-item md-size-70 "><!--  class="md-layout-item md-size-70 " -->
+          <md-field  v-bind:class="{ 'md-invalid': error.admNumErr}" class="md-layout-item "><!--  class="md-layout-item md-size-70 " -->
             <label for="email">Admission Number</label>
             <md-input type="email" name="email" id="email" autocomplete="email" v-model="form.admNum"/>
            <!--  <span class="md-error" v-if="!$v.form.email.required">The email is required</span>
@@ -29,7 +28,7 @@
         </md-card-content>
 
         <md-card-content class="md-layout md-alignment-space-around-center">
-          <md-field class="md-layout-item md-size-70 ">
+          <md-field class="md-layout-item ">
             <label for="email">Password</label>
             <md-input type="password" name="email" id="email" autocomplete="email" v-model="form.password"/>
            <!--  <span class="md-error" v-if="!$v.form.email.required">The email is required</span>
@@ -38,7 +37,7 @@
         </md-card-content>
 
         <md-card-content class="md-layout md-alignment-space-around-center">
-          <md-field class="md-layout-item md-size-35">
+          <md-field class="md-layout-item">
           <label for="userType">User Type</label>
           <md-select v-model="form.type" name="type" id="type">
             <md-option value="student">Student</md-option>
@@ -50,15 +49,15 @@
             
            <!--  <span class="md-error" v-if="!$v.form.email.required">The email is required</span>
             <span class="md-error" v-else-if="!$v.form.email.email">Invalid email</span> -->
-          </md-field>
-          <div class="md-layout-item md-size-35"></div>
+          </md-field> 
         </md-card-content>
 
 
 
 
-        <md-card-actions>
-          <md-button @click="submit" class="md-dense md-raised md-primary">Create user</md-button>
+        <md-card-actions md-alignment="space-between">
+          <a @click="toggle">Registered? Sign in</a>
+          <md-button @click="submit" class="md-dense md-raised md-primary">Register</md-button>
         </md-card-actions>
       </md-card>
     </form>
@@ -66,13 +65,9 @@
 </template>
 
 <script>
-  import Navbar from '@/components/dashboard/Navbar'
   import axios from 'axios'
   export default {
     name: 'SignUp',
-    components:{
-      Navbar
-    },
     data: () => ({
       form: {
         userName:null,
@@ -114,7 +109,7 @@
         }).then(function(res){
             if(res.data.success){
               console.log(res);
-              self.$router.push('/login');
+              self.$emit('toggle')
             }
             else{
               self.form.userName = null
@@ -138,6 +133,9 @@
             console.log(err);
           })
       },
+      toggle:function(){
+          this.$emit('toggle')
+      }
     }
   }
 </script>

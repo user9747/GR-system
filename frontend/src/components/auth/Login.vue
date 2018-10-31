@@ -1,14 +1,13 @@
 <template>
   <div>
-    <Navbar/>
     <form novalidate class="md-layout md-alignment-space-around-center" style="padding-top: 3vh">
-      <md-card class="md-layout-item md-size-70  ">
+      <md-card class="md-layout-item">
         <md-card-header>
-          <div class="md-title">Log In</div>
+          <div class="md-title"><strong>Log In</strong></div>
         </md-card-header>
 
         <md-card-content class="md-layout md-alignment-space-around-center">
-          <md-field v-bind:class="{'md-invalid': error.userErr}" class="md-layout-item md-size-70 ">
+          <md-field v-bind:class="{'md-invalid': error.userErr}" class="md-layout-item">
             <label for="email">User Name</label>
             <md-input type="email" name="email" id="email" autocomplete="email" v-model="form.userName"/>
             <span class="md-error" >{{ error.userMsg }}</span>
@@ -16,18 +15,15 @@
         </md-card-content>
 
         <md-card-content class="md-layout md-alignment-space-around-center">
-          <md-field v-bind:class="{'md-invalid': error.passErr}" class="md-layout-item md-size-70 ">
+          <md-field v-bind:class="{'md-invalid': error.passErr}" class="md-layout-item">
             <label for="email">Password</label>
             <md-input type="password" name="email" id="email" autocomplete="email" v-model="form.password"/>
             <span class="md-error">{{ error.passMsg }}</span>
           </md-field>
         </md-card-content>
-
-
-
-
-        <md-card-actions>
-          <md-button  @click="submit" class="md-dense md-raised md-primary">Log In</md-button>
+        <md-card-actions md-alignment="space-between">
+            <a @click="toggle">Not registered? Click here </a>
+            <md-button  @click="submit" class="md-dense md-raised md-primary">Log In</md-button>
         </md-card-actions>
       </md-card>
     </form>
@@ -35,13 +31,9 @@
 </template>
 
 <script>
-  import Navbar from '@/components/dashboard/Navbar'
   import axios from 'axios'
   export default {
-    name: 'LogIn',
-    components:{
-      Navbar
-    },
+    name: 'Login',
     data: () => ({
       form: {
         userName:null,
@@ -91,6 +83,9 @@
           }
         })
       },
+      toggle:function(){
+          this.$emit('toggle')
+      }
     }
   }
 </script>
@@ -102,4 +97,5 @@
     right: 0;
     left: 0;
   }
+/*  */
 </style>
