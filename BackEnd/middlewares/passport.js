@@ -4,9 +4,10 @@ const passportJWT = require('passport-jwt')
 const JWTStrategy = passportJWT.Strategy
 const ExtractJWT = passportJWT.ExtractJwt
 const userMethods = require('../methods/user')
+const cellMethods = require('../methods/cell')
 const bcrypt = require('bcrypt')
 
-passport.use(new LocalStrategy({
+passport.use('user_local',new LocalStrategy({
     usernameField: 'username',
     passwordField: 'password'
     },
@@ -42,6 +43,46 @@ passport.use(new LocalStrategy({
             .catch((err) => {
                 console.log("Inside passport local strategy\nError caught  in get user \n"+err);
                 
+            })
+    }
+))
+
+passport.use('cell_login', new LocalStrategy({
+    usernameField: 'username',
+    passwordField: 'password'
+},
+    (username,password,cb) => {
+        return cellMethods.getUserByUsername({'username': username})
+            .then((cell) => {
+                if(!cell){
+                    return cb(null, false, {
+                        message: 'no such username'
+                    })
+                }
+                else{
+                    console.log(password)
+                    console.log(cell.password)
+
+                    bcrypt.compare(password, cell.password)
+                    .then((res) => {
+                        if(!res){
+                            return cb(null, false, {
+                                message: 'incorrect password'
+                            })
+                        }
+                        else{
+                            return cb(null, cell, {message: 'Logged In Successfully'});
+                        }
+                    })
+                    .catch((err) => {
+                        console.log("Inside passport local strategy\nError caught in bcrypt \n"+err.stack);
+                    })
+                    
+                    
+                }
+            })
+            .catch((err) => {
+                console.log("Inside passport local strategy\nError caught  in get user \n"+err);  
             })
     }
 ))

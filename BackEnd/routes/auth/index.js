@@ -7,7 +7,7 @@ const userMethods = require('../../methods/user')
 /* POST login. */
 router.post('/login', function (req, res, next) {
 
-    passport.authenticate('local', {session: false}, (err, user, info) => {
+    passport.authenticate('user_local', {session: false}, (err, user, info) => {
         if (err || !user) {
             return res.json({
                 error: info.message
@@ -20,8 +20,9 @@ router.post('/login', function (req, res, next) {
            }
 
            // generate a signed son web token with the contents of user object and return it in the response
+           
 
-           const token = jwt.sign(user.toJSON(), 'poda_albine_and_akhile_and_bilale')         
+           const token = jwt.sign({'user_name': user.user_name }, 'poda_albine_and_akhile_and_bilale')         
            return res.json({
                'username': user.user_name,
                 'token': token
@@ -67,5 +68,30 @@ router.post('/register', function(req, res, next){
         })
     })
 
+})
+
+router.post('/celllogin', function (req,res,next){
+    passport.authenticate('cell_login', {session: false}, (err, user, info) => {
+        if (err || !user) {
+            return res.json({
+                error: info.message
+            })
+        }
+
+       req.login(user, {session: false}, (err) => {
+           if (err) {
+               res.send(err)
+           }
+
+           // generate a signed son web token with the contents of user object and return it in the response
+           
+
+           const token = jwt.sign({'user_name': user.user_name }, 'poda_albine_and_akhile_and_bilale')         
+           return res.json({
+               'username': user.user_name,
+                'token': token
+            })
+        })
+    })(req, res)
 })
 module.exports = router

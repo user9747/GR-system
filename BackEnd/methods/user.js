@@ -8,7 +8,7 @@ const bcrypt = require('bcrypt')
 var userMethods = {}
 
 
-const schema = Joi.object().keys({
+const studSchema = Joi.object().keys({
     username: Joi.string().alphanum().required(),
     password: Joi.string(),
     admNo: Joi.string().alphanum(),
@@ -18,7 +18,7 @@ const schema = Joi.object().keys({
 userMethods.addUser = (info)=>{
     return new Promise((resolve, reject) => {
         if(info.type == 'student'){
-            Joi.validate(info,schema, (err, value) => {
+            Joi.validate(info,studSchema, (err, value) => {
                 if(err === null){
                     studentMethods.getStudentByAdmNo(info.admNo)
                     .then((student) => {
