@@ -1,4 +1,5 @@
 const model = require('../models').grievance
+const userModel = require('../models').user
 const Promise = require('bluebird')
 
 
@@ -20,18 +21,47 @@ grMethods.getGrievance = (info) => {
 
 grMethods.createGrievance = (info) => {
 	return new Promise((resolve,reject)=>{
-		model.create(info)
-		.then((doc)=>{
-			resolve(doc)
-		}).catch((err)=>{
-			reject(err)
-		})
+		userModel.findOne({
+            where: {
+                user_name : info.username
+            }
+        })
+        .then((user) => {
+        	info.user_id = user.user_id;
+            model.create(info)
+			.then((doc)=>{
+				resolve(doc)
+			})
+			.catch((err)=>{
+				reject(err)
+			})
+        })
+        .catch((err) => {
+            reject(err)
+        })
+
 	})
 
 }
 
 grMethods.updateGrievance = ()=>{
 
+}
+
+grMethods.getAll = (info)=>{
+	return new Promise((resolve,reject)=>{
+		model.findAll({
+			where:{
+				status : info
+			}	
+		})
+		.then((doc)=>{
+			resolve(doc)
+		})
+		.catch((err)=>{
+			reject(err)
+		})
+	})
 }
 
 module.exports = grMethods

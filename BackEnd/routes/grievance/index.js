@@ -1,9 +1,25 @@
 const express = require('express')
 const router  = express.Router()
 const grMethods = require('../../methods/grievance')
+const userMethods = require('../../methods/user')
 const uid = require('uniqid')
 
-
+router.get('/number',(req,res)=>{
+	grMethods.getAll("saved")
+	.then((data)=>{
+		res.json({
+			'success':true,
+			'data_length':data.length,
+			 data
+		})
+	})
+	.catch((err)=>{
+		res.json({
+			'success':false,
+			err
+		})
+	})
+})
 
 router.get('/:token',(req,res) => {
 	var info = {}
@@ -24,7 +40,7 @@ router.get('/:token',(req,res) => {
 
 })
 
-router.post('/',(req,res) => {
+router.post('/',function(req,res){
  	var info = {};
  	if(Object.prototype.hasOwnProperty.call(req.body, 'remark')){
  		info.remark=req.body.remark
@@ -32,17 +48,16 @@ router.post('/',(req,res) => {
  	else{
  		info.remark="No Remarks"
  	}
+ 	info.username=req.body.user_name;
  	info.grievance_id= uid();
  	info.title = req.body.title;
  	info.description = req.body.description;
- 	info.user_id = 'user97472mpgt6f0jnwwlv0j';
  	info.date_created = new Date(Date.now());
  	info.resolve_date = '2018-01-01';
  	info.cell_id= 'cell_1';
  	info.status = 'saved';
  	info.category = '';
  	info.token = uid();
- 	console.log(info)
 
  	grMethods.createGrievance(info)
  	.then((data)=>{
@@ -74,7 +89,7 @@ router.put('/',(req,res) => {
  	info.user_id = 'user97472mpgt6f0jnwwlv0j';
  	info.date_created = new Date(Date.now());
  	info.resolve_date = '2018-01-01';
- 	info.cell_id= 'cell_1';
+ 	info.cell_id= 'nill';
  	info.status = 'saved';
  	info.category = '';
  	info.token = uid();

@@ -11,7 +11,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    isLoggedIn: localStorage.getItem("token")?true:false
+    isLoggedIn: localStorage.getItem("token")?true:false,
   },
   mutations: {
     [LOGIN](state){
@@ -65,6 +65,12 @@ export default new Vuex.Store({
   getters: {
     isLoggedIn: state => {
       return state.isLoggedIn
+    },
+    bearerToken: state =>{
+      return localStorage.getItem("token")
+    },
+    userName: state =>{
+      return localStorage.getItem("username")
     }
   }
 })

@@ -4,6 +4,7 @@ import Home from './views/Home.vue'
 import UserDash from './views/UserDash'
 import ErrorComponent from './views/Error'
 import NewGrievance from './views/NewGrievance'
+import Success from './views/Success'
 import store from './store'
 
 Vue.use(Router)
@@ -37,6 +38,11 @@ const router =  new Router({
       path: '/404',
       name: '404',
       component: ErrorComponent
+    },
+    {
+      path: '/submitted',
+      name: 'submitted',
+      component: Success
     }
   ]
 })
