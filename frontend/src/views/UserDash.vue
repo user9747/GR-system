@@ -46,7 +46,7 @@
       </md-card-header>
 
       <md-card-actions>
-        <md-button class="md-fab md-primary" >
+        <md-button class="md-fab md-primary" @click="newGr" >
           <md-icon>add</md-icon>
         </md-button>
       </md-card-actions>
@@ -94,6 +94,11 @@ export default {
   name: 'dashboard',
   components:{
     Navbar
+  },
+  methods:{
+    newGr(){
+      this.$router.push('createGR')
+    }
   }
 }
 </script>

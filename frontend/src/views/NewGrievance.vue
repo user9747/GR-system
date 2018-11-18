@@ -41,6 +41,7 @@
 
 <script>
 import Navbar from '@/components/dashboard/Navbar'
+import axios from 'axios'
 export default {
     name: 'NewGrievance',
     components: {
@@ -57,8 +58,21 @@ export default {
     },
     methods:{
         submit(){
-            console.log("Submitted");
-            
+            var self=this;
+            var data=self.form
+            data.user_name=this.$store.getters.userName;
+            var config={
+              headers: { Authorization: "Bearer " + this.$store.getters.bearerToken }
+            }
+            console.log(config)
+            axios.post('http://localhost:3000/grievance',data,config)
+            .then((res)=>{
+                console.log("Submitted "+res);
+                self.$router.push('submitted')
+            })
+            .catch((err)=>{
+                console.log(err);
+            })            
         },
         save(){
             console.log("save");
