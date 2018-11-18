@@ -4,6 +4,7 @@ import Home from './views/Home.vue'
 import UserDash from './views/UserDash'
 import ErrorComponent from './views/Error'
 import NewGrievance from './views/NewGrievance'
+import CellLogin from './components/auth/CellLogin'
 import store from './store'
 
 Vue.use(Router)
@@ -27,6 +28,11 @@ const router =  new Router({
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
+    },
+    {
+      path: '/loginCell',
+      name: 'cell-login',
+      component: CellLogin
     },
     {
       path: '/createGR',
