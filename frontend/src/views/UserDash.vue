@@ -1,61 +1,63 @@
 <template>
-  <div>
-    <Navbar/>
+  <md-app >
+    <md-app-toolbar class="md-primary" >
+      <Navbar @toggleNav = "showNavigation = !showNavigation" />
+    </md-app-toolbar>
+    <md-app-drawer md-permanent="clipped" :md-active.sync="showNavigation">
+      <Drawer />
+    </md-app-drawer>
+    <md-app-content>
+      <div class="md-layout md-gutter md-alignment-top-center">
+        <md-card md-with-hover>
+          <md-ripple>
+            <md-card-header>
+              <div class="md-title">Check Grievance Status</div>
+            </md-card-header>
 
-    <div class="md-layout md-gutter md-alignment-top-center">
-    <md-card class="md-primary" md-theme="orange-card" md-with-hover >
-      <md-card-header>
-        <md-card-header-text>
-          <div class="md-title">Closed Grievances</div>
-          <div class="md-subhead">3</div>
-        </md-card-header-text>
+            <md-card-content>
+              <md-icon class="md-size-3x">info</md-icon>
+            </md-card-content>
+          </md-ripple>
+        </md-card>
+        <md-card md-with-hover>
+          <md-ripple>
+            <md-card-header>
+              <div class="md-title">View Ongoing Grievances</div>
+            </md-card-header>
 
-        <md-card-media md-medium>
-          <img src="/assets/examples/card-weather.png" alt="People">
-        </md-card-media>
-      </md-card-header>
+            <md-card-content>
+              <md-icon class="md-size-3x">error_outline</md-icon>
+            </md-card-content>
+          </md-ripple>
+        </md-card>
+      </div>
+      <div class="md-layout md-gutter md-alignment-top-center">
+        <md-card md-with-hover>
+          <md-ripple>
+            <md-card-header>
+              <div class="md-title">View Resolved Grievances</div>
+            </md-card-header>
 
-      <md-card-actions>
-        <md-button>View</md-button>
-      </md-card-actions>
-    </md-card>
+            <md-card-content>
+              <md-icon class="md-size-3x">history</md-icon>
+            </md-card-content>
+          </md-ripple>
+        </md-card>
+        <md-card md-with-hover @click="route('createGR')">
+          <md-ripple>
+            <md-card-header>
+              <div class="md-title">Submit a Grievance</div>
+            </md-card-header>
 
-    <md-card class="md-primary" md-theme="orange-card" md-with-hover >
-      <md-card-header>
-        <md-card-header-text>
-          <div class="md-title">Ongoing Grievances</div>
-          <div class="md-subhead">1</div>
-        </md-card-header-text>
+            <md-card-content>
+              <md-icon class="md-size-3x">check_circle_outline</md-icon>
+            </md-card-content>
+          </md-ripple>
+        </md-card>
+      </div>
 
-        <md-card-media md-medium>
-          <img src="/assets/examples/card-weather.png" alt="People">
-        </md-card-media>
-      </md-card-header>
-
-      <md-card-actions>
-        <md-button>View</md-button>
-      </md-card-actions>
-    </md-card>
-  </div>
-    <div class="md-layout md-gutter md-alignment-top-center">
-    <md-card class="md-primary" md-theme="green-card" md-with-hover>
-      <md-card-header>
-        <md-card-header-text>
-          <div class="md-title">Submit New Grievance</div>
-        </md-card-header-text>
-      </md-card-header>
-
-      <md-card-actions>
-        <md-button class="md-fab md-primary" @click="newGr" >
-          <md-icon>add</md-icon>
-        </md-button>
-      </md-card-actions>
-    </md-card>
-  </div>
-
-
-
-  </div>
+    </md-app-content>
+  </md-app>
 </template>
 
 <style lang="scss" scoped>
@@ -86,19 +88,56 @@
     display: inline-block;
     vertical-align: top;
   }
+
+  .md-app{
+    height: inherit;
+  }
+
+   // Demo purposes only
+  .md-drawer {
+    width: 230px;
+    max-width: calc(100vw - 125px);
+    color: antiquewhite;
+  }
+
+  .md-content {
+    padding: 16px;
+  }
+
+  .md-layout{
+    padding-top: 16px;
+  }
+
+
 </style>
 
 <script>
   import Navbar from '@/components/dashboard/Navbar'
+  import Drawer from '@/components/dashboard/Drawer'
 export default {
   name: 'dashboard',
   components:{
-    Navbar
+    Navbar,
+    Drawer
+  },
+  data: function(){
+    return {
+      showNavigation: false
+    }
   },
   methods:{
     newGr(){
       this.$router.push('createGR')
-    }
+    },
+    route:function(r){
+  		console.log("routing....");
+  		this.$router.push('/'+r);
+  	},
+  	logout:function(){
+      console.log("logging out...");
+      this.$store.dispatch('logout')
+      this.$router.push('/')
+  	}
   }
 }
 </script>
