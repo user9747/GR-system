@@ -6,6 +6,7 @@ import ErrorComponent from './views/Error'
 import NewGrievance from './views/NewGrievance'
 import CellLogin from './components/auth/CellLogin'
 import Success from './views/Success'
+import StatusForm from './views/StatusForm'
 import store from './store'
 
 Vue.use(Router)
@@ -49,13 +50,18 @@ const router =  new Router({
       path: '/submitted',
       name: 'submitted',
       component: Success
+    },{
+      path: '/status',
+      name: 'status',
+      component: StatusForm
     }
   ]
 })
 
 const privateRoutes = [
   "/dashboard",
-  "/createGR"
+  "/createGR",
+  "/status"
 ]
 
 router.beforeEach((to,from, next) => {

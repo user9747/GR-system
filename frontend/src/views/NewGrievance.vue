@@ -1,7 +1,13 @@
 <template>
-    <div>
-        <Navbar />
-        <div class="md-layout md-alignment-center-center">
+    <md-app>
+        <md-app-toolbar class="md-primary">
+            <Navbar @toggleNav = "showNavigation = !showNavigation"/>
+        </md-app-toolbar>
+        <md-app-drawer md-permanent="clipped" :md-active.sync="showNavigation">
+            <Drawer />
+        </md-app-drawer>
+        <md-app-content>
+            <div class="md-layout md-alignment-center-center">
             <md-card class="md-layout-item md-size-70">
                 <md-card-header>
                     <div class="md-title">Create new Grievance</div>
@@ -36,16 +42,21 @@
             </md-card>
 
         </div>
-    </div>
+
+        </md-app-content>
+        
+    </md-app>
 </template>
 
 <script>
 import Navbar from '@/components/dashboard/Navbar'
+import Drawer from'@/components/dashboard/Drawer'
 import axios from 'axios'
 export default {
     name: 'NewGrievance',
     components: {
-        Navbar
+        Navbar,
+        Drawer
     },
     data(){
         return{
@@ -53,7 +64,8 @@ export default {
                 title: null,
                 description: null,
                 remark: null
-            }
+            },
+            showNavigation: false
         }
     },
     methods:{
@@ -82,6 +94,23 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
+.md-app{
+    height: inherit;
+  }
 
+   // Demo purposes only
+  .md-drawer {
+    width: 230px;
+    max-width: calc(100vw - 125px);
+    color: antiquewhite;
+  }
+
+  .md-content {
+    padding: 16px;
+  }
+
+  .md-layout{
+    padding-top: 20px;
+  }
 </style>

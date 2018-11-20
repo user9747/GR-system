@@ -21,14 +21,23 @@ router.get('/number',(req,res)=>{
 	})
 })
 
-router.get('/:token',(req,res) => {
+router.get('/token',(req,res) => {
 	var info = {}
-	info.token = req.params.token
+	console.log(req.query)
+	info.token = req.query.token
 	grMethods.getGrievance(info)
 	.then((data)=>{
+		var info = {}
+		info.title = data.title
+		info.token = data.token
+		info.status = data.status
+		if(data.grievance_id === null)
+			info.assigned = false
+		else
+			info.assigned = true
 		res.json({
 			'success':true,
-			data
+			'info':info
 		})
 	})
 	.catch((err)=>{
@@ -53,8 +62,8 @@ router.post('/',function(req,res){
  	info.title = req.body.title;
  	info.description = req.body.description;
  	info.date_created = new Date(Date.now());
- 	info.resolve_date = '2018-01-01';
- 	info.cell_id= 'cell_1';
+ 	info.resolve_date = null;
+ 	info.cell_id= null;
  	info.status = 'saved';
  	info.category = '';
  	info.token = uid();
@@ -88,8 +97,8 @@ router.put('/',(req,res) => {
  	info.description = req.body.description;
  	info.user_id = 'user97472mpgt6f0jnwwlv0j';
  	info.date_created = new Date(Date.now());
- 	info.resolve_date = '2018-01-01';
- 	info.cell_id= 'nill';
+ 	info.resolve_date = null;
+ 	info.cell_id= null;
  	info.status = 'saved';
  	info.category = '';
  	info.token = uid();
