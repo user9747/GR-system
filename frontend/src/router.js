@@ -7,6 +7,8 @@ import NewGrievance from './views/NewGrievance'
 import CellLogin from './components/auth/CellLogin'
 import Success from './views/Success'
 import StatusForm from './views/StatusForm'
+import PendingGR from './views/PendingGR'
+import ClosedGR from './views/ClosedGR'
 import store from './store'
 
 Vue.use(Router)
@@ -50,10 +52,21 @@ const router =  new Router({
       path: '/submitted',
       name: 'submitted',
       component: Success
-    },{
+    },
+    {
       path: '/status',
       name: 'status',
       component: StatusForm
+    },
+    {
+      path: '/pending',
+      name: 'pending-grievances',
+      component: PendingGR
+    },
+    {
+      path: '/closed',
+      name: 'closed-grievances',
+      component: ClosedGR
     }
   ]
 })
@@ -61,7 +74,10 @@ const router =  new Router({
 const privateRoutes = [
   "/dashboard",
   "/createGR",
-  "/status"
+  "/status",
+  "/submitted",
+  "/pending",
+  "/closed"
 ]
 
 router.beforeEach((to,from, next) => {

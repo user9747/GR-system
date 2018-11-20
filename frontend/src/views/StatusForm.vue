@@ -26,14 +26,25 @@
                     </md-card>
                 </form>
             </div>
-             <md-card v-if="success">
-                    <md-card-header>
-                        <span class="md-headline">{{ data.title }}</span>
-                    </md-card-header>
-                    <md-card-content>
-                        <span class="md-body-1">Status: {{ data.status }}</span>
-                    </md-card-content>
-                </md-card>
+            <div v-if="success">
+                <div class="md-layout md-alignment-top-left">
+                     <a @click="success = !success" class="return">
+                        <md-icon class="md-size-2x">
+                            arrow_back
+                        </md-icon>
+                    </a>
+                </div>
+                <div class="md-layout md-alignment-space-around-center">
+                    <md-card>
+                        <md-card-header>
+                            <span class="md-headline">{{ data.title }}</span>
+                        </md-card-header>
+                        <md-card-content>
+                            <span class="md-body-1">Status: {{ data.status }}</span>
+                        </md-card-content>
+                    </md-card>
+                </div>
+            </div>             
         </md-app-content>
     </md-app>
 </template>
@@ -105,4 +116,15 @@ export default {
 .md-app{
     height: inherit;
 }
+.md-drawer {
+    width: 230px;
+    max-width: calc(100vw - 125px);
+    color: antiquewhite;
+  }
+
+  .md-content {
+    padding: 16px;
+  }
+
+
 </style>

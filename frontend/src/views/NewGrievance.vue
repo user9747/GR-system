@@ -77,7 +77,7 @@ export default {
               headers: { Authorization: "Bearer " + this.$store.getters.bearerToken }
             }
             console.log(config)
-            axios.post('http://localhost:3000/grievance',data,config)
+            axios.post('http://localhost:3000/grievance/submit',data,config)
             .then((res)=>{
                 console.log("Submitted "+res);
                 self.$router.push('submitted')
@@ -88,8 +88,56 @@ export default {
         },
         save(){
             console.log("save");
+            var self=this;
+            if(this.form.remark === null){
+                this.form.remark = "No remarks"
+            }
+            var data=self.form
+            data.user_name=this.$store.getters.userName;
+            var config={
+              headers: { Authorization: "Bearer " + this.$store.getters.bearerToken }
+            }
+            console.log(config)
+            axios.post('http://localhost:3000/grievance/save',data,config)
+            .then((res)=>{
+                console.log("saved ");
+                console.log(res);
+                
+                self.$router.push('submitted')
+            })
+            .catch((err)=>{
+                console.log(err);
+            })
             
         }
+    },
+    mounted(){
+        console.log("Retrieving saved grievance");
+        var self = this;
+        axios.get('http://localhost:3000/grievance/saved',{
+            params: {
+                user_name:this.$store.getters.userName
+            },
+            headers: { 
+                Authorization: "Bearer " + this.$store.getters.bearerToken 
+            }                
+        })
+        .then((res) => {
+            console.log(res);
+            
+            if(res.data.success){
+                self.form.title = res.data.info.title
+                self.form.description = res.data.info.description
+                self.form.remark = res.data.info.remark
+            }
+            else{
+                console.log("ERR "+res.data.error)
+            }
+        })
+        .catch((err) => {
+            console.log("ERR "+ err);            
+        })
+        
     }
 }
 </script>

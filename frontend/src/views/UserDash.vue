@@ -21,19 +21,22 @@
             </md-ripple>
           </md-card>
         </a>
-        <md-card md-with-hover>
-          <md-ripple>
-            <md-card-header>
-              <div class="md-title">View Ongoing Grievances</div>
-            </md-card-header>
+        <a @click="route('pending')">
+          <md-card md-with-hover>
+            <md-ripple>
+              <md-card-header>
+                <div class="md-title">View Ongoing Grievances</div>
+              </md-card-header>
 
-            <md-card-content>
-              <md-icon class="md-size-3x">error_outline</md-icon>
-            </md-card-content>
-          </md-ripple>
-        </md-card>
+              <md-card-content>
+                <md-icon class="md-size-3x">error_outline</md-icon>
+              </md-card-content>
+            </md-ripple>
+          </md-card>
+        </a>
       </div>
       <div class="md-layout md-gutter md-alignment-top-center">
+        <a @click="route('closed')">
         <md-card md-with-hover>
           <md-ripple>
             <md-card-header>
@@ -45,6 +48,7 @@
             </md-card-content>
           </md-ripple>
         </md-card>
+        </a>
         <a @click="route('createGR')">
           <md-card md-with-hover>
 			<md-ripple>

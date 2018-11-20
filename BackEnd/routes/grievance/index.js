@@ -4,26 +4,70 @@ const grMethods = require('../../methods/grievance')
 const userMethods = require('../../methods/user')
 const uid = require('uniqid')
 
-router.get('/number',(req,res)=>{
-	grMethods.getAll("saved")
-	.then((data)=>{
+router.get('/pending',(req,res)=>{
+	var info = {
+		username: req.query.user_name,
+		status:"pending"
+	}
+	grMethods.getAll(info)
+	.then((doc)=>{
+		var data = []
+		var id = 1
+		doc.forEach(element => {
+			data.push({
+				'id': id++,
+				'title':element.title,
+				'remark':element.remark,
+				'status':element.status
+			})
+		});
 		res.json({
 			'success':true,
 			'data_length':data.length,
-			 data
+			'info':data
 		})
 	})
 	.catch((err)=>{
 		res.json({
 			'success':false,
-			err
+			'error':err
+		})
+	})
+})
+
+router.get('/closed',(req,res) => {
+	var info = {
+		username: req.query.user_name,
+		status:"closed"
+	}
+	grMethods.getAll(info)
+	.then((doc)=>{
+		var data = []
+		var id = 1
+		doc.forEach(element => {
+			data.push({
+				'id': id++,
+				'title':element.title,
+				'remark':element.remark,
+				'status':element.status
+			})
+		});
+		res.json({
+			'success':true,
+			'data_length':data.length,
+			'info':data
+		})
+	})
+	.catch((err)=>{
+		res.json({
+			'success':false,
+			'error':err
 		})
 	})
 })
 
 router.get('/token',(req,res) => {
 	var info = {}
-	console.log(req.query)
 	info.token = req.query.token
 	grMethods.getGrievance(info)
 	.then((data)=>{
@@ -31,7 +75,7 @@ router.get('/token',(req,res) => {
 		info.title = data.title
 		info.token = data.token
 		info.status = data.status
-		if(data.grievance_id === null)
+		if(data.cell_id === null)
 			info.assigned = false
 		else
 			info.assigned = true
@@ -49,7 +93,38 @@ router.get('/token',(req,res) => {
 
 })
 
-router.post('/',function(req,res){
+router.get('/saved',(req,res) => {
+	var user = req.query.user_name
+	grMethods.getSaved({'username':user})
+	.then((doc) => {
+		if(!doc){
+			res.json({
+				'success':false,
+				'error': 'No saved grievances'
+			})
+			return
+		}
+		var info = {}
+		info.title = doc.title,
+		info.description = doc.description
+		if(doc.remark == "No remarks")
+			info.remark = ''
+		else
+			info.remark = doc.remark
+		res.json({
+			'success':true,
+			'info':info
+		})
+	})
+	.catch((err) => {
+		res.json({
+			'success':false,
+			'error':err
+		})
+	})
+})
+
+router.post('/submit',function(req,res){
  	var info = {};
  	if(Object.prototype.hasOwnProperty.call(req.body, 'remark')){
  		info.remark=req.body.remark
@@ -64,7 +139,7 @@ router.post('/',function(req,res){
  	info.date_created = new Date(Date.now());
  	info.resolve_date = null;
  	info.cell_id= null;
- 	info.status = 'saved';
+ 	info.status = 'pending';
  	info.category = '';
  	info.token = uid();
 
@@ -84,7 +159,43 @@ router.post('/',function(req,res){
 
  })
 
-router.put('/',(req,res) => {
+ router.post('/save',function(req,res){
+	var info = {};
+	/* if(Object.prototype.hasOwnProperty.call(req.body, 'remark')){
+		info.remark=req.body.remark
+	}
+	else{
+		info.remark="No Remarks"
+	} */
+	info.remark = req.body.remark
+	info.username=req.body.user_name;
+	info.grievance_id= uid();
+	info.title = req.body.title;
+	info.description = req.body.description;
+	info.date_created = new Date(Date.now());
+	info.resolve_date = null;
+	info.cell_id= null;
+	info.status = 'saved';
+	info.category = '';
+	info.token = uid();
+
+	grMethods.createGrievance(info)
+	.then((data)=>{
+		res.json({
+			'success':true,
+			'info':data
+		})
+	})
+	.catch((err)=>{
+		res.json({
+			'success':false,
+			'err':err.message
+		})
+	})
+
+})
+
+/* router.put('/',(req,res) => {
  	var info = {};
  	if(Object.prototype.hasOwnProperty.call(req.body, 'remark')){
  		info.remark=req.body.remark
@@ -118,7 +229,7 @@ router.put('/',(req,res) => {
  		})
  	})
 
- })
+ }) */
 
 
 
