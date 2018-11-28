@@ -42,6 +42,7 @@ export default {
     },
     mounted(){
         var self = this
+        
         axios.get('http://localhost:3000/grievance/closed',{
             params: {
                 user_name:this.$store.getters.userName
