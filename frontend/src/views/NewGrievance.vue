@@ -33,10 +33,27 @@
                             </md-field>
                         </div>
                     </div>
+   <!-- FIle upload Modal -->
+
+                    <div>
+                        <md-dialog :md-active.sync="showDialog">
+                        <md-dialog-title>Upload File</md-dialog-title>
+                        <md-field>
+                                <!-- <label for="file">Select File</label> -->
+                                <input type='file' name='file' id="file" @change='onFileSelected'>
+                            </md-field>
+                        <md-dialog-actions>
+                            <md-button class="md-primary" @click="showDialog = false">Close</md-button>
+                            <md-button ref="uploadBtn" class="md-primary" @click="uploadFile">upload</md-button>
+                        </md-dialog-actions>
+                        </md-dialog>  
+                    </div>
+   <!-- FIle upload Modal Ends -->
                 </md-card-content>
                         <md-card-actions>
                             <md-button type="submit" class="md-raised md-primary" @click="save">Save</md-button>
                             <md-button type="submit" class="md-raised md-accent" @click="submit">Submit</md-button>
+                            <md-button class="md-primary md-raised" @click="showDialog = true">Upload File</md-button>
                         </md-card-actions>
 
             </md-card>
@@ -44,8 +61,7 @@
         </div>
 
         </md-app-content>
-        
-    </md-app>
+  </md-app>
 </template>
 
 <script>
@@ -63,9 +79,11 @@ export default {
             form:{
                 title: null,
                 description: null,
-                remark: null
+                remark: null,
+                selectedFile:null
             },
-            showNavigation: false
+            showNavigation: false,
+            showDialog:false
         }
     },
     methods:{
@@ -95,20 +113,48 @@ export default {
             var data=self.form
             data.user_name=this.$store.getters.userName;
             var config={
-              headers: { Authorization: "Bearer " + this.$store.getters.bearerToken }
+              headers: { 
+                  Authorization: "Bearer " + this.$store.getters.bearerToken
+               }
             }
             console.log(config)
             axios.post('http://localhost:3000/grievance/save',data,config)
             .then((res)=>{
                 console.log("saved ");
-                console.log(res);
-                
+                console.log(res);              
                 alert("Successfully saved");
             })
             .catch((err)=>{
                 console.log(err);
             })
             
+        },
+        onFileSelected:function(event){
+                this.selectedFile = event.target.files[0]
+                console.log(this.selectedFile)
+            },
+        uploadFile:function(){
+                var self = this
+                var data = {};
+                var fileData = new FormData()
+                fileData.append('user',this.$store.getters.userName);
+                fileData.append('file',this.selectedFile,this.selectedFile.name)
+                var config={
+                        headers: { 
+                            Authorization: "Bearer " + this.$store.getters.bearerToken,
+                            'content-type':'multipart/form-data'
+                            }
+                        }
+                console.log(config)
+                axios.post('http://localhost:3000/grievance/file',fileData,config)
+                .then((res)=>{
+                    console.log(res);              
+                    alert("Successfully uploaded");
+                    this.showDialog=false;
+                })
+                .catch((err)=>{
+                    console.log(err);
+                })
         }
     },
     mounted(){
@@ -162,3 +208,14 @@ export default {
     padding-top: 20px;
   }
 </style>
+
+
+
+
+
+
+
+
+
+
+

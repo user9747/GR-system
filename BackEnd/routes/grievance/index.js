@@ -3,6 +3,22 @@ const router  = express.Router()
 const grMethods = require('../../methods/grievance')
 const userMethods = require('../../methods/user')
 const uid = require('uniqid')
+const multer  = require('multer')
+var path = require('path');
+var storage = multer.diskStorage(
+    {
+        destination: function(req,file,cb){
+			console.log(req.user)
+			cb(null,path.join('./uploads/','test'))
+		} ,
+        filename: function ( req, file, cb ) {
+            //req.body is empty... here is where req.body.new_file_name doesn't exists
+            cb( null, file.originalname );
+        }
+    }
+);
+var upload = multer( { storage: storage } );
+
 
 router.get('/pending',(req,res)=>{
 	var info = {
@@ -193,6 +209,22 @@ router.post('/submit',function(req,res){
 		})
 	})
 
+})
+
+router.post('/file',upload.single('file'),function(req,res){
+	if (!req.file) {
+		console.log("No file received");
+		
+	    res.json({
+		  success: false
+		});
+	
+	  } else {
+		console.log('file received');
+		res.json({
+		  success: true
+		})
+	  }
 })
 
 /* router.put('/',(req,res) => {
