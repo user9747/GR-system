@@ -7,61 +7,65 @@
       <Drawer />
     </md-app-drawer>
     <md-app-content>
-      <div class="md-layout md-gutter md-alignment-top-center">
-        <a @click="route('status')">
+      <div v-if="$store.getters.usertype == 'user' ">
+
+        <div class="md-layout md-gutter md-alignment-top-center">
+          <a @click="route('status')">
+            <md-card md-with-hover>
+              <md-ripple>
+                <md-card-header>
+                  <div class="md-title">Check Grievance Status</div>
+                </md-card-header>
+
+                <md-card-content>
+                  <md-icon class="md-size-3x">info</md-icon>
+                </md-card-content>
+              </md-ripple>
+            </md-card>
+          </a>
+          <a @click="route('pending')">
+            <md-card md-with-hover>
+              <md-ripple>
+                <md-card-header>
+                  <div class="md-title">View Ongoing Grievances</div>
+                </md-card-header>
+
+                <md-card-content>
+                  <md-icon class="md-size-3x">error_outline</md-icon>
+                </md-card-content>
+              </md-ripple>
+            </md-card>
+          </a>
+        </div>
+        <div class="md-layout md-gutter md-alignment-top-center">
+          <a @click="route('closed')">
           <md-card md-with-hover>
             <md-ripple>
               <md-card-header>
-                <div class="md-title">Check Grievance Status</div>
+                <div class="md-title">View Resolved Grievances</div>
               </md-card-header>
 
               <md-card-content>
-                <md-icon class="md-size-3x">info</md-icon>
+                <md-icon class="md-size-3x">history</md-icon>
               </md-card-content>
             </md-ripple>
           </md-card>
-        </a>
-        <a @click="route('pending')">
-          <md-card md-with-hover>
-            <md-ripple>
-              <md-card-header>
-                <div class="md-title">View Ongoing Grievances</div>
-              </md-card-header>
+          </a>
+          <a @click="route('createGR')">
+            <md-card md-with-hover>
+        <md-ripple>
+          <md-card-header>
+          <div class="md-title">Submit a Grievance</div>
+          </md-card-header>
 
-              <md-card-content>
-                <md-icon class="md-size-3x">error_outline</md-icon>
-              </md-card-content>
-            </md-ripple>
-          </md-card>
-        </a>
-      </div>
-      <div class="md-layout md-gutter md-alignment-top-center">
-        <a @click="route('closed')">
-        <md-card md-with-hover>
-          <md-ripple>
-            <md-card-header>
-              <div class="md-title">View Resolved Grievances</div>
-            </md-card-header>
-
-            <md-card-content>
-              <md-icon class="md-size-3x">history</md-icon>
-            </md-card-content>
-          </md-ripple>
-        </md-card>
-        </a>
-        <a @click="route('createGR')">
-          <md-card md-with-hover>
-			<md-ripple>
-				<md-card-header>
-				<div class="md-title">Submit a Grievance</div>
-				</md-card-header>
-
-				<md-card-content>
-				<md-icon class="md-size-3x">check_circle_outline</md-icon>
-				</md-card-content>
-			</md-ripple>
-          </md-card>
-        </a>
+          <md-card-content>
+          <md-icon class="md-size-3x">check_circle_outline</md-icon>
+          </md-card-content>
+        </md-ripple>
+            </md-card>
+          </a>
+        </div>
+      
       </div>
 
     </md-app-content>

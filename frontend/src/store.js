@@ -6,12 +6,14 @@ const LOGIN = "LOGIN"
 const LOGIN_SUCCESS = "LOGIN_SUCCESS"
 const LOGOUT = "LOGOUT"
 const LOGIN_FAILED = "LOGIN_FAILED"
+const setUserType = "setUserType"
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
     isLoggedIn: localStorage.getItem("token")?true:false,
+    userType:''
   },
   mutations: {
     [LOGIN](state){
@@ -26,7 +28,13 @@ export default new Vuex.Store({
     },
     [LOGOUT](state){
       state.isLoggedIn = false
-    }
+      state.userType = ''
+    },
+    [setUserType](state,type){
+      console.log(type);
+      
+      state.userType = type
+    },
   },
   actions: {
     login({ commit }, creds){
@@ -49,6 +57,7 @@ export default new Vuex.Store({
             localStorage.setItem("username",res.data.username)
             localStorage.setItem("token",res.data.token)
             commit(LOGIN_SUCCESS)
+            commit(setUserType, 'user')
             resolve()
           }).catch((err)=>{
             console.log(err.message)
@@ -76,6 +85,7 @@ export default new Vuex.Store({
             localStorage.setItem("username",res.data.username)
             localStorage.setItem("token",res.data.token)
             commit(LOGIN_SUCCESS)
+            commit(setUserType,'cell')
             resolve()
           }).catch((err)=>{
             console.log(err.message)
@@ -94,10 +104,14 @@ export default new Vuex.Store({
       return state.isLoggedIn
     },
     bearerToken: state =>{
-      return localStorage.getItem("token")
+/*       console.log(localStorage.getItem("token"))
+ */      return localStorage.getItem("token")
     },
     userName: state =>{
       return localStorage.getItem("username")
+    },
+    usertype: state => {
+      return state.userType
     }
   }
 })
