@@ -103,7 +103,7 @@ export default {
                 console.log("saved ");
                 console.log(res);
                 
-                self.$router.push('submitted')
+                alert("Successfully saved");
             })
             .catch((err)=>{
                 console.log(err);
@@ -123,7 +123,7 @@ export default {
             }                
         })
         .then((res) => {
-            console.log(res);
+            console.log(res.data.info);
             
             if(res.data.success){
                 self.form.title = res.data.info.title
