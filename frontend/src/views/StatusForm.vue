@@ -84,7 +84,7 @@ export default {
                 console.log("null error");
             }
             else{
-                axios.get('http://localhost:3000/grievance/token',{
+                axios.get('http://localhost:3000/grievance/user/token',{
                     params:{
                         token:this.form.token
                     },

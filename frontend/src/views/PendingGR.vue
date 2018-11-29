@@ -42,7 +42,7 @@ export default {
     },
     mounted(){
         var self = this
-        axios.get('http://localhost:3000/grievance/pending',{
+        axios.get('http://localhost:3000/grievance/user/pending',{
             params: {
                 user_name:this.$store.getters.userName
             },
