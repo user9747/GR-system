@@ -9,6 +9,7 @@ import Success from './views/Success'
 import StatusForm from './views/StatusForm'
 import PendingGR from './views/PendingGR'
 import ClosedGR from './views/ClosedGR'
+import PendingCell from './views/PendingCell'
 import store from './store'
 
 Vue.use(Router)
@@ -49,8 +50,8 @@ const router =  new Router({
       component: ErrorComponent
     },
     {
-      path: '/submitted',
-      name: 'submitted',
+      path: '/success',
+      name: 'success',
       component: Success
     },
     {
@@ -60,7 +61,12 @@ const router =  new Router({
     },
     {
       path: '/pending',
-      name: 'pending-grievances',
+      name: 'pending',
+      component: PendingCell
+    },
+    {
+      path: '/submitted',
+      name: 'submitted',
       component: PendingGR
     },
     {

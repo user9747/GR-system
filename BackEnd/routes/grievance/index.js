@@ -9,11 +9,11 @@ var storage = multer.diskStorage(
     {
         destination: function(req,file,cb){
 			console.log(req.user)
-			cb(null,path.join('./uploads/','test'))
+			cb(null,path.join('./uploads/'))
 		} ,
         filename: function ( req, file, cb ) {
             //req.body is empty... here is where req.body.new_file_name doesn't exists
-            cb( null, file.originalname );
+            cb( null, req.user.user_name+file.originalname);
         }
     }
 );
@@ -25,8 +25,38 @@ router.get('/pending',(req,res)=>{
 		username: req.query.user_name,
 		status:"pending"
 	}
-	grMethods.getAll(info)
+	grMethods.getAllUser(info)
 	.then((doc)=>{
+		var data = []
+		var id = 1
+		doc.forEach(element => {
+			data.push({
+				'id': id++,
+				'title':element.title,
+				'remark':element.remark,
+				'status':element.status
+			})
+		});
+		res.json({
+			'success':true,
+			'data_length':data.length,
+			'info':data
+		})
+	})
+	.catch((err)=>{
+		res.json({
+			'success':false,
+			'error':err
+		})
+	})
+})
+
+router.get('/pending/all',(req,res) => {
+	var info = {
+		status: "pending"
+	}
+	grMethods.getAll(info)
+	.then((doc) => {
 		var data = []
 		var id = 1
 		doc.forEach(element => {
@@ -56,7 +86,7 @@ router.get('/closed',(req,res) => {
 		username: req.query.user_name,
 		status:"closed"
 	}
-	grMethods.getAll(info)
+	grMethods.getAllUser(info)
 	.then((doc)=>{
 		var data = []
 		var id = 1

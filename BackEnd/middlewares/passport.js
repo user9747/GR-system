@@ -93,13 +93,29 @@ passport.use(new JWTStrategy({
     },
     function(jwtPayload, cb){
         console.log(jwtPayload);
-        
-        return userMethods.findUserByUsername({username: jwtPayload.user_name})
+
+        if(jwtPayload.usertype == 'user'){
+            return userMethods.findUserByUsername({username: jwtPayload.user_name})
                 .then((user) => {
                     return cb(null, user)
                 })
                 .catch((err) => {
                     return cb(err)
                 })
+        }
+        else if(jwtPayload.usertype == 'cell'){
+            console.log("OK");
+            
+            return cellMethods.getUserByUsername({username: jwtPayload.user_name})
+                .then((user) => {
+                 
+                    return cb(null, user)
+                })
+                .catch((err) => {
+                    return cb(err)
+                })
+        }
+        else return cb(new Error("Invalid user type " + jwtPayload))
+        
     }
 ))

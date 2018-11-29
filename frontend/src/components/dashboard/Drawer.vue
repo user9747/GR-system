@@ -28,10 +28,6 @@
             <span class="md-list-item-text">Statistics</span>
           </md-list-item>
 
-          <md-list-item>
-            <md-icon>error</md-icon>
-            <span class="md-list-item-text">Enthenkilum okke add cheyyam</span>
-          </md-list-item>
         </md-list>
     </div>
 </template>
