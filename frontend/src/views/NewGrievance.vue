@@ -53,7 +53,7 @@
                         <md-card-actions>
                             <md-button type="submit" class="md-raised md-primary" @click="save">Save</md-button>
                             <md-button type="submit" class="md-raised md-accent" @click="submit">Submit</md-button>
-                            <md-button class="md-primary md-raised" @click="showDialog = true">Upload File</md-button>
+                            <md-button v-if="showButton" class="md-primary md-raised" @click="showDialog = true">Upload File</md-button>
                         </md-card-actions>
 
             </md-card>
@@ -83,7 +83,8 @@ export default {
                 selectedFile:null
             },
             showNavigation: false,
-            showDialog:false
+            showDialog:false,
+            showButton:false
         }
     },
     methods:{
