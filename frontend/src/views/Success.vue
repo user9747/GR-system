@@ -11,6 +11,8 @@
 </div>
 <div>
 	<h1>Your Greivance has been successfully submitted.</h1>
+  <h1 style="color:green;">Token:{{token}}</h1>
+  <h4>Keep the token safe for further references on submitted Greivance.</h4>
 </div>
  </div>
 </template>
@@ -305,6 +307,12 @@ export default {
   name: 'success',
   components:{
     Navbar
+  },
+  props: ['token'],
+  data() {
+    return {
+      
+    }
   }
 }
 </script>

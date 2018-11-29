@@ -26,12 +26,12 @@
                                 <md-input name="description" id="description" v-model="form.description" />
                             </md-field>
                         </div>
-                        <div class="md-layout-item md-size-70 md-small-size-100">
+                        <!-- <div class="md-layout-item md-size-70 md-small-size-100">
                             <md-field>
                                 <label for="remark">Remarks</label>
                                 <md-input name="remark" id="remark" v-model="form.remark" />
                             </md-field>
-                        </div>
+                        </div> -->
                     </div>
    <!-- FIle upload Modal -->
 
@@ -79,7 +79,6 @@ export default {
             form:{
                 title: null,
                 description: null,
-                remark: null,
                 selectedFile:null
             },
             showNavigation: false,
@@ -89,9 +88,9 @@ export default {
     },
     methods:{
         submit(){
-            var self=this;
+            var self=this
             var data=self.form
-            data.user_name=this.$store.getters.userName;
+            data.user_name=this.$store.getters.userName
             var config={
               headers: { Authorization: "Bearer " + this.$store.getters.bearerToken }
             }
@@ -100,7 +99,8 @@ export default {
             .then((res)=>{
                 console.log("Submitted "+res);
                 self.showButton=true;
-                self.$router.push('submitted')
+                console.log(res.data.info)
+                self.$router.push({name:"success",params:{token:res.data.info.token}})
             })
             .catch((err)=>{
                 console.log(err);
@@ -108,22 +108,18 @@ export default {
         },
         save(){
             console.log("save");
-            var self=this;
-            if(this.form.remark === null){
-                this.form.remark = "No remarks"
-            }
+            var self=this
             var data=self.form
-            data.user_name=this.$store.getters.userName;
+            data.user_name=this.$store.getters.userName
             var config={
               headers: { 
                   Authorization: "Bearer " + this.$store.getters.bearerToken
                }
             }
-            console.log(config)
             axios.post('http://localhost:3000/grievance/user/save',data,config)
             .then((res)=>{
                 console.log("saved ");
-                console.log(res);              
+                console.log(res.data.info);              
                 alert("Successfully saved");
                 self.showButton=true;
             })
@@ -177,7 +173,6 @@ export default {
             if(res.data.success){
                 self.form.title = res.data.info.title
                 self.form.description = res.data.info.description
-                self.form.remark = res.data.info.remark
                 self.showButton=true;
             }
             else{

@@ -84,8 +84,18 @@ grMethods.createGrievance = (info) => {
 					})
 					.then((doc) => {
 						console.log("Updated value");
-						
-						resolve(doc)
+						model.findOne({
+							where:{
+								grievance_id:res.grievance_id
+							}
+						})
+						.then((doc)=>{
+							resolve(doc)
+						})
+						.catch((err)=>{
+							console.log("Err "+err)
+							reject(err)
+						})						
 					})
 					.catch((err) => {
 						console.log("Err "+err)
