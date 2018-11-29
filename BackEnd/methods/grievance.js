@@ -198,7 +198,23 @@ grMethods.acceptGrievance = (info) => {
 			reject(err)
 		})
 	})
-	
+}
+
+grMethods.getGrievanceById = (info) => {
+	return new Promise((resolve,reject) => {
+		model.findOne({
+			where:{
+				grievance_id:info.grievance_id
+			}
+		})
+		.then((doc) => {
+			resolve(doc)
+		})
+		.catch((err) => {
+			console.log(err.message);
+			reject(err)
+		})
+	})
 }
 
 module.exports = grMethods

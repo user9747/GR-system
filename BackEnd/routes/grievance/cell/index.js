@@ -1,6 +1,7 @@
 const express = require('express')
 const router  = express.Router()
 const grMethods = require('../../../methods/grievance')
+const userMethods = require('../../../methods/user')
 const uid = require('uniqid')
 const multer  = require('multer')
 var path = require('path');
@@ -84,6 +85,39 @@ router.get('/accepted',(req,res) => {
 		res.json({
 			'success':false,
 			'error':err.message
+		})
+	})
+})
+
+router.get('/single',(req,res) => {
+	var info = {
+		grievance_id: req.query.grievance_id
+	}
+	grMethods.getGrievanceById(info)
+	.then((grievance) =>  {
+		var data = {}
+		data.title = grievance.title
+		data.description = grievance.description
+		userMethods.findUserByUserID(grievance)
+		.then((user) => {
+			data.username = user.user_name
+			res.json({
+				success:true,
+				data: data
+			})
+		})
+		.catch((err) => {
+			console.log(err);
+			res.json({
+				success:false,
+				error: err.message
+			})
+		})
+	})
+	.catch((err) => {
+		res.json({
+			success:false,
+			error: err.message
 		})
 	})
 })

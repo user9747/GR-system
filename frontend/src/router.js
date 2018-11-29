@@ -9,7 +9,9 @@ import Success from './views/Success'
 import StatusForm from './views/StatusForm'
 import PendingGR from './views/PendingGR'
 import ClosedGR from './views/ClosedGR'
+import AcceptedGR from './views/AcceptedGR'
 import PendingCell from './views/PendingCell'
+import ResolveGR from './views/ResolveGR'
 import store from './store'
 
 Vue.use(Router)
@@ -73,6 +75,16 @@ const router =  new Router({
       path: '/closed',
       name: 'closed-grievances',
       component: ClosedGR
+    },
+    {
+      path: '/accepted',
+      name: 'accepted',
+      component: AcceptedGR
+    },{
+      path:'/resolve',
+      name:'resolve',
+      props:true,
+      component:ResolveGR
     }
   ]
 })
