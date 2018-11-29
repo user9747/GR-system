@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
+import createPersistedState from 'vuex-persistedstate'
 
 const LOGIN = "LOGIN"
 const LOGIN_SUCCESS = "LOGIN_SUCCESS"
@@ -36,6 +37,9 @@ export default new Vuex.Store({
       state.userType = type
     },
   },
+  plugins:[createPersistedState({
+    paths: ['isLoggedIn', 'userType']
+  })],
   actions: {
     login({ commit }, creds){
       commit(LOGIN)

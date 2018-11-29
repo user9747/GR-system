@@ -109,7 +109,23 @@ grMethods.updateGrievance = ()=>{
 
 }
 
-grMethods.getAll = (info)=>{
+grMethods.getAll = (info) => {
+	return new Promise((resolve,reject) => {
+		model.findAll({
+			where:{
+				status :info.status
+			}
+		})
+		.then((doc) => {
+			resolve(doc)
+		})
+		.catch((err) => {
+			reject(err)
+		})
+	})
+}
+
+grMethods.getAllUser = (info)=>{
 	return new Promise((resolve,reject)=>{
 		userMethods.findUserByUsername(info)
 		.then((res) => {
