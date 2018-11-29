@@ -3,6 +3,7 @@ const router  = express.Router()
 const jwt = require('jsonwebtoken')
 const passport = require('passport')
 const userMethods = require('../../methods/user')
+const fs = require('fs')
 
 /* POST login. */
 router.post('/login', function (req, res, next) {
@@ -21,7 +22,11 @@ router.post('/login', function (req, res, next) {
 
            // generate a signed son web token with the contents of user object and return it in the response
            
-
+           if(!fs.existsSync('./uploads/'+user.user_name)){
+                fs.mkdir('./uploads/'+user.user_name, { recursive: true }, (err) => {
+                    if (err) throw err;
+                });
+           }
            const token = jwt.sign({'user_name': user.user_name }, 'poda_albine_and_akhile_and_bilale')         
            return res.json({
                'username': user.user_name,
@@ -39,6 +44,11 @@ router.post('/register', function(req, res, next){
     info.type = req.body.type
     userMethods.addUser(info)
     .then((user) => {
+        if(!fs.existsSync('./uploads/'+user.user_name)){
+            fs.mkdir('./uploads/'+user.user_name, { recursive: true }, (err) => {
+                if (err) throw err;
+            });
+        }
         return res.json({
             'success': true,
             'message': 'New user created'
