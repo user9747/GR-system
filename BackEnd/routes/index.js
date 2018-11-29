@@ -7,6 +7,6 @@ require('../middlewares/passport')
 
 /* GET home page. */
 router.use('/auth',authRouter)
-router.use('/grievance',passport.authenticate('jwt', {session: false}), grievRouter)
+router.use('/grievance', grievRouter)
 
 module.exports = router;

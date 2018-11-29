@@ -17,7 +17,7 @@
                     <md-table-cell md-label="Sl no" md-numeric>{{item.id}}</md-table-cell>
                     <md-table-cell md-label="Title">{{item.title}}</md-table-cell>
                     <md-table-cell md-label="Status">{{item.status}}</md-table-cell>
-                    <md-table-cell md-label="Accept"><md-button class="md-raised md-primary">Accept</md-button></md-table-cell>                    
+                    <md-table-cell md-label="Accept"><md-button class="md-raised md-primary" @click="accept(item.gr_id)">Accept</md-button></md-table-cell>                    
                 </md-table-row>
             </md-table>
         </md-app-content>
@@ -40,9 +40,40 @@ export default {
             data: null
         }
     },
+    methods:{
+        accept(grievance_id){
+            console.log(grievance_id);
+            var self = this
+            var data = {
+                username: this.$store.getters.userName,
+                grievance_id: grievance_id
+            }
+            console.log(data);
+            var config = {
+                headers:{
+                    Authorization: "Bearer " + this.$store.getters.bearerToken 
+                }
+            }
+            axios.post('http://localhost:3000/grievance/cell/accept',data,config)
+            .then((res) => {
+                if(res.data.success){
+                    console.log("Succesfully accepted")
+                }
+                else{
+                    console.log("err")
+                    console.log(res.data);                    
+                }
+            })
+            .catch((err) => {
+                console.log("err");
+                console.log(err);
+                
+            })
+        }
+    },
     mounted(){
         var self = this
-        axios.get('http://localhost:3000/grievance/pending/all',{
+        axios.get('http://localhost:3000/grievance/cell/pending/all',{
             headers: { 
                 Authorization: "Bearer " + this.$store.getters.bearerToken 
             }                

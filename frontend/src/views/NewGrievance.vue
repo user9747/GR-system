@@ -96,7 +96,7 @@ export default {
               headers: { Authorization: "Bearer " + this.$store.getters.bearerToken }
             }
             console.log(config)
-            axios.post('http://localhost:3000/grievance/submit',data,config)
+            axios.post('http://localhost:3000/grievance/user/submit',data,config)
             .then((res)=>{
                 console.log("Submitted "+res);
                 self.showButton=true;
@@ -120,7 +120,7 @@ export default {
                }
             }
             console.log(config)
-            axios.post('http://localhost:3000/grievance/save',data,config)
+            axios.post('http://localhost:3000/grievance/user/save',data,config)
             .then((res)=>{
                 console.log("saved ");
                 console.log(res);              
@@ -149,7 +149,7 @@ export default {
                             }
                         }
                 console.log(config)
-                axios.post('http://localhost:3000/grievance/file',fileData,config)
+                axios.post('http://localhost:3000/grievance/user/file',fileData,config)
                 .then((res)=>{
                     console.log(res);              
                     alert("Successfully uploaded");
@@ -163,7 +163,7 @@ export default {
     mounted(){
         console.log("Retrieving saved grievance");
         var self = this;
-        axios.get('http://localhost:3000/grievance/saved',{
+        axios.get('http://localhost:3000/grievance/user/saved',{
             params: {
                 user_name:this.$store.getters.userName
             },
