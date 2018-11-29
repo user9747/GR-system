@@ -99,6 +99,7 @@ export default {
             axios.post('http://localhost:3000/grievance/submit',data,config)
             .then((res)=>{
                 console.log("Submitted "+res);
+                self.showButton=true;
                 self.$router.push('submitted')
             })
             .catch((err)=>{
@@ -124,6 +125,7 @@ export default {
                 console.log("saved ");
                 console.log(res);              
                 alert("Successfully saved");
+                self.showButton=true;
             })
             .catch((err)=>{
                 console.log(err);
@@ -176,6 +178,7 @@ export default {
                 self.form.title = res.data.info.title
                 self.form.description = res.data.info.description
                 self.form.remark = res.data.info.remark
+                self.showButton=true;
             }
             else{
                 console.log("ERR "+res.data.error)
