@@ -122,4 +122,24 @@ router.get('/single',(req,res) => {
 	})
 })
 
+router.post('/resolve',(req,res) => {
+	var info = {}
+	info.grievance_id = req.body.grievance_id
+	info.remark = req.body.remark
+	info.status = 'resolved'
+	grMethods.resolveGrievance(info)
+	.then((doc) => {
+		res.json({
+			success: true,
+			message: 'Succesfully resolved'
+		})
+	})
+	.catch((err) => {
+		res.json({
+			success: false,
+			error: err.message
+		})
+	})
+})
+
 module.exports = router
