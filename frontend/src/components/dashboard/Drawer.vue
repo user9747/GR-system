@@ -18,16 +18,13 @@
             <span class="md-list-item-text">Profile</span>
           </md-list-item>
 
-          <md-list-item>
+          <a @click="route('contact')">
+            <md-list-item>
             <md-icon>help</md-icon>
-            <span class="md-list-item-text">Help</span>
+            <span class="md-list-item-text">Contact Us</span>
           </md-list-item>
-
-          <md-list-item>
-            <md-icon>timeline</md-icon>
-            <span class="md-list-item-text">Statistics</span>
-          </md-list-item>
-
+          </a>
+          
         </md-list>
     </div>
 </template>

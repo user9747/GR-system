@@ -12,6 +12,7 @@ import ClosedGR from './views/ClosedGR'
 import AcceptedGR from './views/AcceptedGR'
 import PendingCell from './views/PendingCell'
 import ResolveGR from './views/ResolveGR'
+import Contact from './views/Contact'
 import store from './store'
 
 Vue.use(Router)
@@ -85,6 +86,11 @@ const router =  new Router({
       name:'resolve',
       props:true,
       component:ResolveGR
+    },
+    {
+      path:'/contact',
+      name:'contact',
+      component: Contact
     }
   ]
 })
@@ -95,7 +101,10 @@ const privateRoutes = [
   "/status",
   "/submitted",
   "/pending",
-  "/closed"
+  "/closed",
+  "/accepted",
+  "/resolve",
+  "/contact"
 ]
 
 router.beforeEach((to,from, next) => {

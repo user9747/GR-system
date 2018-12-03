@@ -127,6 +127,7 @@ router.post('/resolve',(req,res) => {
 	info.grievance_id = req.body.grievance_id
 	info.remark = req.body.remark
 	info.status = 'resolved'
+	info.resolve_date = new Date(Date.now())
 	grMethods.resolveGrievance(info)
 	.then((doc) => {
 		res.json({

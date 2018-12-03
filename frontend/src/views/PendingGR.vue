@@ -17,7 +17,7 @@
                     <md-table-cell md-label="Sl no" md-numeric>{{item.id}}</md-table-cell>
                     <md-table-cell md-label="Title">{{item.title}}</md-table-cell>
                     <md-table-cell md-label="Status">{{item.status}}</md-table-cell>
-                    <md-table-cell md-label="Remark">{{item.remark}}</md-table-cell>                    
+                    <md-table-cell md-label="Date Created">{{item.create_date}}</md-table-cell>                    
                 </md-table-row>
             </md-table>
         </md-app-content>
