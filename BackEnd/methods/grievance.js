@@ -160,6 +160,36 @@ grMethods.getAllUser = (info)=>{
 	})
 }
 
+grMethods.getAllUserPending = (info)=> {
+	return new Promise((resolve,reject)=>{
+		userMethods.findUserByUsername(info)
+		.then((res) => {
+			model.findAll({
+				where:{
+					user_id : res.user_id,
+					status:{
+						$and:[{
+							$ne: 'saved'
+						},{
+							$ne:'resolved'
+						}]
+					}			
+				}	
+			})
+			.then((doc)=>{
+				resolve(doc)
+			})
+			.catch((err)=>{
+				reject(err)
+			})
+		})
+		.catch((err)=>{
+			reject(err)
+		})		
+
+	})
+}
+
 grMethods.getAllCell = (info)=>{
 	return new Promise((resolve,reject)=>{
 		cellMethods.getUserByUsername(info)
@@ -208,7 +238,42 @@ grMethods.acceptGrievance = (info) => {
 			reject(err)
 		})
 	})
-	
+}
+
+grMethods.getGrievanceById = (info) => {
+	return new Promise((resolve,reject) => {
+		model.findOne({
+			where:{
+				grievance_id:info.grievance_id
+			}
+		})
+		.then((doc) => {
+			resolve(doc)
+		})
+		.catch((err) => {
+			console.log(err.message);
+			reject(err)
+		})
+	})
+}
+
+grMethods.resolveGrievance = (info) => {
+	return new Promise((resolve, reject) => {
+		model.update({
+			status: info.status,
+			remark: info.remark
+		},{
+			where:{
+				grievance_id: info.grievance_id
+			}
+		})
+		.then((doc) => {
+			resolve(doc)
+		})
+		.catch((err) => {
+			reject(err)
+		})
+	})
 }
 
 module.exports = grMethods

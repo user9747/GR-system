@@ -42,6 +42,8 @@ export default {
     },
     methods:{
         accept(grievance_id){
+            console.log("inside accept of pending");
+            
             console.log(grievance_id);
             var self = this
             var data = {
@@ -58,6 +60,7 @@ export default {
             .then((res) => {
                 if(res.data.success){
                     console.log("Succesfully accepted")
+                    self.$router.push("/accepted")
                 }
                 else{
                     console.log("err")

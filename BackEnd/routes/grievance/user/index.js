@@ -21,10 +21,9 @@ var upload = multer( { storage: storage } );
 
 router.get('/pending',(req,res)=>{
 	var info = {
-		username: req.query.user_name,
-		status:"pending"
+		username: req.query.user_name
 	}
-	grMethods.getAllUser(info)
+	grMethods.getAllUserPending(info)
 	.then((doc)=>{
 		var data = []
 		var id = 1
@@ -54,7 +53,7 @@ router.get('/pending',(req,res)=>{
 router.get('/closed',(req,res) => {
 	var info = {
 		username: req.query.user_name,
-		status:"closed"
+		status:"resolved"
 	}
 	grMethods.getAllUser(info)
 	.then((doc)=>{
@@ -138,12 +137,13 @@ router.get('/saved',(req,res) => {
 
 router.post('/submit',function(req,res){
  	var info = {};
- 	if(Object.prototype.hasOwnProperty.call(req.body, 'remark')){
+ 	/* if(Object.prototype.hasOwnProperty.call(req.body, 'remark')){
  		info.remark=req.body.remark
  	}
  	else{
  		info.remark="No Remarks"
- 	}
+	 } */
+	 info.remark = null
  	info.username=req.body.user_name;
  	info.grievance_id= uid();
  	info.title = req.body.title;
@@ -179,7 +179,7 @@ router.post('/submit',function(req,res){
 	else{
 		info.remark="No Remarks"
 	} */
-	info.remark = req.body.remark
+	info.remark = null
 	info.username=req.body.user_name;
 	info.grievance_id= uid();
 	info.title = req.body.title;

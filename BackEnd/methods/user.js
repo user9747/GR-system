@@ -101,4 +101,20 @@ userMethods.findUserByUsername = (info) => {
     })
 }
 
+userMethods.findUserByUserID = (info) => {
+    return new Promise((resolve, reject) => {
+        model.findOne({
+            where: {
+                user_id : info.user_id
+            }
+        })
+        .then((user) => {
+            resolve(user)
+        })
+        .catch((err) => {
+            reject(err)
+        })
+    })
+}
+
 module.exports = userMethods
