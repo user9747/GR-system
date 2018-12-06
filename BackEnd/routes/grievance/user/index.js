@@ -123,10 +123,6 @@ router.get('/saved',(req,res) => {
 		var info = {}
 		info.title = doc.title,
 		info.description = doc.description
-		if(doc.remark == "No remarks")
-			info.remark = ''
-		else
-			info.remark = doc.remark
 		res.json({
 			'success':true,
 			'info':info
@@ -164,7 +160,7 @@ router.post('/submit',function(req,res){
  	.then((data)=>{
  		res.json({
  			'success':true,
- 			data
+ 			'info':data
  		})
  	})
  	.catch((err)=>{

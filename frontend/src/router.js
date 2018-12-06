@@ -55,6 +55,7 @@ const router =  new Router({
     {
       path: '/success',
       name: 'success',
+      props:true,
       component: Success
     },
     {
