@@ -95,7 +95,7 @@ export default {
               headers: { Authorization: "Bearer " + this.$store.getters.bearerToken }
             }
             console.log(config)
-            axios.post('http://localhost:3000/grievance/user/submit',data,config)
+            axios.post(process.env.VUE_APP_ROOT_API+'grievance/user/submit',data,config)
             .then((res)=>{
                 console.log("Submitted "+res);
                 self.showButton=true;
@@ -116,7 +116,7 @@ export default {
                   Authorization: "Bearer " + this.$store.getters.bearerToken
                }
             }
-            axios.post('http://localhost:3000/grievance/user/save',data,config)
+            axios.post(process.env.VUE_APP_ROOT_API+'grievance/user/save',data,config)
             .then((res)=>{
                 console.log("saved ");
                 console.log(res.data.info);              
@@ -145,7 +145,7 @@ export default {
                             }
                         }
                 console.log(config)
-                axios.post('http://localhost:3000/grievance/user/file',fileData,config)
+                axios.post(process.env.VUE_APP_ROOT_API+'grievance/user/file',fileData,config)
                 .then((res)=>{
                     console.log(res);              
                     alert("Successfully uploaded");
@@ -159,7 +159,7 @@ export default {
     mounted(){
         console.log("Retrieving saved grievance");
         var self = this;
-        axios.get('http://localhost:3000/grievance/user/saved',{
+        axios.get(process.env.VUE_APP_ROOT_API+'grievance/user/saved',{
             params: {
                 user_name:this.$store.getters.userName
             },

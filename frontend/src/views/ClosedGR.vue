@@ -44,7 +44,7 @@ export default {
     mounted(){
         var self = this
         
-        axios.get('http://localhost:3000/grievance/user/closed',{
+        axios.get(process.env.VUE_APP_ROOT_API+'grievance/user/closed',{
             params: {
                 user_name:this.$store.getters.userName
             },

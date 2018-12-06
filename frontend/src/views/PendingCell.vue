@@ -7,7 +7,7 @@
             <Drawer/>
         </md-app-drawer>
         <md-app-content>
-            <md-table v-model="data" md-card>
+            <md-table v-model="data" md-card v-if="data.length != 0">
                 <md-table-toolbar>
                     <md-table-toolbar>
                         <h1 class="md-title">Pending Grievances</h1>
@@ -20,6 +20,12 @@
                     <md-table-cell md-label="Accept"><md-button class="md-raised md-primary" @click="accept(item.gr_id)">Accept</md-button></md-table-cell>                    
                 </md-table-row>
             </md-table>
+            <md-empty-state
+                md-icon="access_time"
+                md-label="No Pending Grievances"
+                md-description="No pending grievances to be resolved"
+                v-else>
+            </md-empty-state>
         </md-app-content>
     </md-app>
 </template>
@@ -56,7 +62,7 @@ export default {
                     Authorization: "Bearer " + this.$store.getters.bearerToken 
                 }
             }
-            axios.post('http://localhost:3000/grievance/cell/accept',data,config)
+            axios.post(process.env.VUE_APP_ROOT_API+'grievance/cell/accept',data,config)
             .then((res) => {
                 if(res.data.success){
                     console.log("Succesfully accepted")
@@ -76,7 +82,8 @@ export default {
     },
     mounted(){
         var self = this
-        axios.get('http://localhost:3000/grievance/cell/pending/all',{
+        console.log(process.env.VUE_APP_ROOT_API)
+        axios.get(process.env.VUE_APP_ROOT_API+'grievance/cell/pending/all',{
             headers: { 
                 Authorization: "Bearer " + this.$store.getters.bearerToken 
             }                

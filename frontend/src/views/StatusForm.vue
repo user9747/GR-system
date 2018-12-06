@@ -99,7 +99,7 @@ export default {
                 console.log("null error");
             }
             else{
-                axios.get('http://localhost:3000/grievance/user/token',{
+                axios.get(process.env.VUE_APP_ROOT_API+'grievance/user/token',{
                     params:{
                         token:this.form.token
                     },

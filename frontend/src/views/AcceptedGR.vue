@@ -7,7 +7,7 @@
             <Drawer/>
         </md-app-drawer>
         <md-app-content>
-            <md-table v-model="data" md-card>
+            <md-table v-model="data" md-card v-if="data.length != 0">
                 <md-table-toolbar>
                     <md-table-toolbar>
                         <h1 class="md-title">Accepted Grievances</h1>
@@ -20,6 +20,13 @@
                     <md-table-cell md-label="Accept"><md-button class="md-raised md-primary" @click="complete(item.gr_id)">Resolve</md-button></md-table-cell>                    
                 </md-table-row>
             </md-table>
+            <md-empty-state
+                md-icon="access_time"
+                md-label="No Accepted Grievances"
+                md-description="You can accept grievances by clicking on Pending Grievance Tab in Dashboard"
+                v-else>
+            </md-empty-state>
+            
         </md-app-content>
     </md-app>
 </template>
@@ -73,7 +80,7 @@ export default {
                 username: this.$store.getters.userName
             }                
         }
-        axios.get('http://localhost:3000/grievance/cell/accepted',config)
+        axios.get(process.env.VUE_APP_ROOT_API+'grievance/cell/accepted',config)
         .then((res) => {
             console.log(res.data);
             if(res.data.success){

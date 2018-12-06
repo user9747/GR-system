@@ -1,20 +1,27 @@
 <template>
- <div>
-    <Navbar/>
-    <div class="check_mark">
-  <div class="sa-icon sa-success animate">
-    <span class="sa-line sa-tip animateSuccessTip"></span>
-    <span class="sa-line sa-long animateSuccessLong"></span>
-    <div class="sa-placeholder"></div>
-    <div class="sa-fix"></div>
-  </div>
-</div>
-<div>
-	<h1>Your Greivance has been successfully submitted.</h1>
-  <h1 style="color:green;">Token:{{token}}</h1>
-  <h4>Keep the token safe for further references on submitted Greivance.</h4>
-</div>
- </div>
+<md-app>
+        <md-app-toolbar class="md-primary">
+            <Navbar @toggleNav = "showNavigation = !showNavigation"/>
+        </md-app-toolbar>
+        <md-app-drawer md-permanent="clipped" :md-active.sync="showNavigation">
+            <Drawer />
+        </md-app-drawer>
+        <md-app-content>
+          <div class="check_mark">
+            <div class="sa-icon sa-success animate">
+              <span class="sa-line sa-tip animateSuccessTip"></span>
+              <span class="sa-line sa-long animateSuccessLong"></span>
+              <div class="sa-placeholder"></div>
+              <div class="sa-fix"></div>
+            </div>
+          </div>
+          <div>
+            <h1>Your Greivance has been successfully submitted.</h1>
+            <h1 style="color:green;">Token:{{token}}</h1>
+            <h4>Keep the token safe for further references on submitted Greivance.</h4>
+          </div>            
+        </md-app-content>
+  </md-app>
 </template>
 
 
@@ -303,15 +310,17 @@ button {
 
 <script>
   import Navbar from '@/components/dashboard/Navbar'
+  import Drawer from '@/components/dashboard/Drawer'
 export default {
   name: 'success',
   components:{
-    Navbar
+    Navbar,
+    Drawer
   },
   props: ['token'],
   data() {
     return {
-      
+      showNavigation: false
     }
   }
 }
