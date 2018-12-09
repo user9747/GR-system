@@ -78,7 +78,7 @@ export default {
                     Authorization: "Bearer " + this.$store.getters.bearerToken 
                 }
             }
-            axios.post('http://localhost:3000/grievance/cell/resolve',data,config)
+            axios.post(process.env.VUE_APP_ROOT_API+'grievance/cell/resolve',data,config)
             .then((res) => {
                 if(res.data.success){
                     alert('Successfully resolved grievance')
@@ -108,7 +108,7 @@ export default {
         console.log(this.$props.id);
         console.log(config.params);
         
-        axios.get('http://localhost:3000/grievance/cell/single',config)
+        axios.get(process.env.VUE_APP_ROOT_API+'grievance/cell/single',config)
         .then((res) => {
             console.log(res.data);  
             self.data = res.data.data          

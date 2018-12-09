@@ -41,8 +41,8 @@
           <label for="userType">User Type</label>
           <md-select v-model="form.type" name="type" id="type">
             <md-option value="student">Student</md-option>
-            <md-option value="teacher">Teacher</md-option>
-            <md-option value="other">Other</md-option>
+            <md-option value="teacher" disabled>Teacher</md-option>
+            <md-option value="other" disabled>Other</md-option>
           </md-select>
       
             

@@ -46,7 +46,7 @@ export default new Vuex.Store({
       return new Promise((resolve,reject) => {
         axios({
           method:'post',
-          url:'http://localhost:3000/auth/login',
+          url:process.env.VUE_APP_ROOT_API+'auth/login',
           data:{
             username:creds.userName,
             password:creds.password,
@@ -74,7 +74,7 @@ export default new Vuex.Store({
       return new Promise((resolve,reject) => {
         axios({
           method:'post',
-          url:'http://localhost:3000/auth/celllogin',
+          url:process.env.VUE_APP_ROOT_API+'auth/celllogin',
           data:{
             username:creds.userName,
             password:creds.password,

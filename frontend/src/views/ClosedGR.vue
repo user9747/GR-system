@@ -17,6 +17,7 @@
                     <md-table-cell md-label="Sl no" md-numeric>{{item.id}}</md-table-cell>
                     <md-table-cell md-label="Title">{{item.title}}</md-table-cell>
                     <md-table-cell md-label="Status">{{item.status}}</md-table-cell>
+                    <md-table-cell md-label="Resolved on">{{ item.resolve_date }}</md-table-cell>
                     <md-table-cell md-label="Remark">{{item.remark}}</md-table-cell>                    
                 </md-table-row>
             </md-table>
@@ -43,7 +44,7 @@ export default {
     mounted(){
         var self = this
         
-        axios.get('http://localhost:3000/grievance/user/closed',{
+        axios.get(process.env.VUE_APP_ROOT_API+'grievance/user/closed',{
             params: {
                 user_name:this.$store.getters.userName
             },

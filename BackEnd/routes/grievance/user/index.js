@@ -31,8 +31,8 @@ router.get('/pending',(req,res)=>{
 			data.push({
 				'id': id++,
 				'title':element.title,
-				'remark':element.remark,
-				'status':element.status
+				'status':element.status,
+				'create_date':element.date_created
 			})
 		});
 		res.json({
@@ -64,7 +64,8 @@ router.get('/closed',(req,res) => {
 				'id': id++,
 				'title':element.title,
 				'remark':element.remark,
-				'status':element.status
+				'status':element.status,
+				'resolve_date': element.resolve_date
 			})
 		});
 		res.json({
@@ -88,12 +89,12 @@ router.get('/token',(req,res) => {
 	.then((data)=>{
 		var info = {}
 		info.title = data.title
+		info.description = data.description
+		info.date_created = data.date_created
 		info.token = data.token
 		info.status = data.status
-		if(data.cell_id === null)
-			info.assigned = false
-		else
-			info.assigned = true
+		info.resolve_date = data.resolve_date
+		info.remark = data.remark
 		res.json({
 			'success':true,
 			'info':info

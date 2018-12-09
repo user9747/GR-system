@@ -34,15 +34,30 @@
                         </md-icon>
                     </a>
                 </div>
-                <div class="md-layout md-alignment-space-around-center">
-                    <md-card>
+                <div class="md-layout md-gutter md-alignment-center-center">
+                    <!-- <md-card>
                         <md-card-header>
                             <span class="md-headline">{{ data.title }}</span>
                         </md-card-header>
                         <md-card-content>
                             <span class="md-body-1">Status: {{ data.status }}</span>
                         </md-card-content>
+                    </md-card> -->
+                    <span class="md-title md-layout-item md-size-90 md-small-size-100">{{ data.title }}</span>
+                    <br>
+                    <md-card class="md-layout-item md-size-90 md-small-size-100">
+                        <md-card-content>
+                                <md-list class="">
+                                    <md-list-item class="">Token Number : {{ data.token }}</md-list-item>
+                                    <md-list-item class="">Created on : {{ data.date_created }}</md-list-item>
+                                    <md-list-item class="">Grievance Status : {{ data.status }}</md-list-item>
+                                    <md-list-item v-if="data.status == 'resolved'">Resolved on : {{ data.resolve_date }}</md-list-item>
+                                    <md-list-item v-if="data.status == 'resolved'">Remarks : {{ data.remark }}</md-list-item>
+
+                                </md-list>
+                        </md-card-content>
                     </md-card>
+
                 </div>
             </div>             
         </md-app-content>
@@ -84,7 +99,7 @@ export default {
                 console.log("null error");
             }
             else{
-                axios.get('http://localhost:3000/grievance/user/token',{
+                axios.get(process.env.VUE_APP_ROOT_API+'grievance/user/token',{
                     params:{
                         token:this.form.token
                     },
@@ -124,6 +139,10 @@ export default {
 
   .md-content {
     padding: 16px;
+  }
+
+  .md-title{
+      font-size: 25px;
   }
 
 

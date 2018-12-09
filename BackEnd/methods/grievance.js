@@ -261,7 +261,8 @@ grMethods.resolveGrievance = (info) => {
 	return new Promise((resolve, reject) => {
 		model.update({
 			status: info.status,
-			remark: info.remark
+			remark: info.remark,
+			resolve_date : info.resolve_date
 		},{
 			where:{
 				grievance_id: info.grievance_id
