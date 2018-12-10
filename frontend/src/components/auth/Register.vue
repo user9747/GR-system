@@ -99,7 +99,7 @@
         var self=this;
         axios({
           method:'post',
-          url:'http://localhost:3000/auth/register',
+          url:process.env.VUE_APP_ROOT_API+'auth/register',
           data:{
             username:this.form.userName,
             password:this.form.password,
