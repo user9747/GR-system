@@ -24,16 +24,45 @@
                 <md-card-content>
                   <md-icon class="md-size-3x">error_outline</md-icon>
                 </md-card-content>
+                
               </md-ripple>
             </md-card>
           </a>
-        </div>      
+           <md-button class="md-primary md-raised" @click="showDialog = true">Print Report</md-button>
+        </div>   
+
+        <div>
+           <md-dialog :md-active.sync="showDialog"> 
+                <md-field>
+                  <md-datepicker v-model="selectedDate" :md-disabled-dates="disabledDates">
+                    <label>Select month and year</label>
+                  </md-datepicker>
+                </md-field>
+                <md-dialog-actions>
+                   <md-button class="md-primary" @click="showDialog = false">Close</md-button>
+                   <md-button class="md-primary md-raised" @click="printReport">Print</md-button>
+                </md-dialog-actions>
+             </md-dialog>  
+         </div>   
     </div>
+    
 </template>
 
 <script>
+import axios from 'axios'
 export default {
     name:"CellDashboard",
+    data(){
+      return{
+        showDialog:false,
+        selectedDate: new Date('2019/01/01'),
+        disabledDates: date => {
+          const day = date.getDate()
+
+          return day >1 
+        }
+      }
+    },
     methods:{
 			newGr(){
 			this.$router.push('createGR')
@@ -46,7 +75,38 @@ export default {
 			console.log("logging out...");
 			this.$store.dispatch('logout')
 			this.$router.push('/')
-			}			
+      },
+      printReport:function(){
+        console.log("printing report");         
+        var self = this
+        var data = {
+            "selectedDate":this.selectedDate
+        }
+        // console.log(data);
+        var config = {
+            headers:{
+                Authorization: "Bearer " + this.$store.getters.bearerToken,
+                'Accept': 'application/pdf' 
+            },
+            responseType: "blob"
+        }
+        axios.post(process.env.VUE_APP_ROOT_API+'grievance/cell/print/report',data,config)
+        .then((response) => {
+            this.showDialog=false;
+            console.log("yoyo")
+            console.log(response)
+            const blob = new Blob([response.data], { type: 'application/pdf' })
+            const objectUrl = window.URL.createObjectURL(blob)
+            window.open(objectUrl)
+            
+        })
+        .catch((err) => {
+            console.log("hellooooooo");
+            // console.log(err);
+            
+        })
+      }
+      	
     }
 }
 </script>

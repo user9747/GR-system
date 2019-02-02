@@ -5,6 +5,8 @@ const userMethods = require('../../../methods/user')
 const uid = require('uniqid')
 const multer  = require('multer')
 var path = require('path');
+const fs = require('fs')
+const PDFDocument = require('pdfkit');
 
 router.get('/pending/all',(req,res) => {
 	var info = {
@@ -139,6 +141,45 @@ router.post('/resolve',(req,res) => {
 		res.json({
 			success: false,
 			error: err.message
+		})
+	})
+})
+
+router.post('/print/report',(req,res)=>{
+	dateToCheck=new Date(req.body.selectedDate)
+	grMethods.getAllByDate()
+	.then((doc) => {
+		var data = []
+		var id = 1
+		doc.forEach(element => {
+			date_created = new Date(element.date_created)
+			if(date_created.getFullYear() === dateToCheck.getFullYear()){
+				if(date_created.getMonth() === dateToCheck.getMonth()){
+					data.push({
+						'id': id++,
+						'gr_id': element.grievance_id,
+						'title':element.title,
+						'remark':element.remark,
+						'status':element.status,
+						'userid':element.user_id
+					})
+				}
+			}
+		});
+		console.log(data)
+		const document = new PDFDocument;
+		document.pipe(res);
+		document.fontSize(25).text("College Of Engineering Trivandrum")
+		for( i=0 ;i<data.length;i++){
+			console.log( data[i].remark);
+			document.fontSize(18).text(data[i].id+"    "+data[i].userid+"    "+data[i].title+"    "+data[i].status);
+		}
+		document.end();
+	})
+	.catch((err)=>{
+		res.json({
+			'success':false,
+			'error':err
 		})
 	})
 })

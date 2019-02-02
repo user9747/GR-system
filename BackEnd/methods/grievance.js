@@ -277,4 +277,18 @@ grMethods.resolveGrievance = (info) => {
 	})
 }
 
+grMethods.getAllByDate = () => {
+	return new Promise((resolve,reject) => {
+		model.findAll({
+			
+		})
+		.then((doc) => {
+			resolve(doc)
+		})
+		.catch((err) => {
+			reject(err)
+		})
+	})
+}
+
 module.exports = grMethods
