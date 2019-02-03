@@ -151,6 +151,7 @@ router.post('/print/report',(req,res)=>{
 	.then((doc) => {
 		var data = []
 		var id = 1
+		var resolvedCount = 0
 		doc.forEach(element => {
 			date_created = new Date(element.date_created)
 			if(date_created.getFullYear() === dateToCheck.getFullYear()){
@@ -163,17 +164,55 @@ router.post('/print/report',(req,res)=>{
 						'status':element.status,
 						'userid':element.user_id
 					})
+					if(element.status=="resolved"){
+						resolvedCount += 1;
+					}
 				}
 			}
 		});
 		console.log(data)
+		var month = new Array();
+		month[0] = "January";
+		month[1] = "February";
+		month[2] = "March";
+		month[3] = "April";
+		month[4] = "May";
+		month[5] = "June";
+		month[6] = "July";
+		month[7] = "August";
+		month[8] = "September";
+		month[9] = "October";
+		month[10] = "November";
+		month[11] = "December";
+		var monthInWords = month[dateToCheck.getMonth()];
 		const document = new PDFDocument;
 		document.pipe(res);
-		document.fontSize(25).text("College Of Engineering Trivandrum")
+		document.fontSize(25).text("College Of Engineering Trivandrum",{align:'center'})
+		document.moveTo(10,100)                               // set the current point
+		.lineTo(document.page.width-10,100)                            // draw a line
+  		.stroke(); 
+		document.moveDown(2);
+		document.fontSize(13).text("Grievance Cell Report for the month"+"  "+monthInWords+" - "+dateToCheck.getFullYear(),{align:'left'})
+		document.moveDown();
+		document.fontSize(13).text("Number of grievances recieved : "+data.length)
+		document.moveDown();
+		document.text("Number of grievances resolved : "+resolvedCount)
+		document.moveDown();
+		document.fontSize(10).text("Sl.No                 UserId                        Title              Status",{align:'left'});
+		
+		document.moveDown(0)
+		document.moveTo(document.x,document.y)                               // set the current point
+		.lineTo(document.page.width-70,document.y)                            // draw a line
+		.stroke();
+	    document.moveDown(0)
 		for( i=0 ;i<data.length;i++){
 			console.log( data[i].remark);
-			document.fontSize(18).text(data[i].id+"    "+data[i].userid+"    "+data[i].title+"    "+data[i].status);
+			document.fontSize(10).text(data[i].id+"      "+data[i].userid+"      "+data[i].title+"         "+data[i].status,{align:'left'});
 		}
+		document.moveTo(10,document.page.height-18)                               // set the current point
+		.lineTo(document.page.width-10,document.page.height-18)                            // draw a line
+  		.stroke();
+		document.fontSize(7).text("Grievance Cell,College Of Engineering Trivandrum",90,document.page.height-15,{lineBreak:false})
 		document.end();
 	})
 	.catch((err)=>{
