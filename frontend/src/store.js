@@ -58,11 +58,18 @@ export default new Vuex.Store({
               commit(LOGIN_FAILED)
               reject(new Error(res.data.error))
             }
+            else if(res.data.verified == false){
+              console.log("User not verified")
+              commit(LOGIN_FAILED)
+              reject(new Error("User not verified"))
+            }
+            else{
             localStorage.setItem("username",res.data.username)
             localStorage.setItem("token",res.data.token)
             commit(LOGIN_SUCCESS)
             commit(setUserType, 'user')
             resolve()
+            }
           }).catch((err)=>{
             console.log(err.message)
             reject(err)

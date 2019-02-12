@@ -13,6 +13,7 @@ import AcceptedGR from './views/AcceptedGR'
 import PendingCell from './views/PendingCell'
 import ResolveGR from './views/ResolveGR'
 import Contact from './views/Contact'
+import Verification from './views/Verification'
 import store from './store'
 
 Vue.use(Router)
@@ -92,6 +93,11 @@ const router =  new Router({
       path:'/contact',
       name:'contact',
       component: Contact
+    },{
+      path:'/verify',
+      name:'verify',
+      props:true,
+      component: Verification
     }
   ]
 })

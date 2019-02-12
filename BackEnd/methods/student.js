@@ -25,4 +25,16 @@ studentMethods.getStudentByAdmNo = (admNo) => {
     })
 }
 
+studentMethods.addStudent = (info) => {
+    return new Promise((resolve, reject) => {
+        model.create(info)
+        .then((res) => {
+            resolve(res)
+        })
+        .catch((err) => {
+            reject(err)
+        })
+    })
+}
+
 module.exports = studentMethods

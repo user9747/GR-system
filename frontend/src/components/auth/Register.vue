@@ -5,25 +5,22 @@
         <md-card-header>
           <div class="md-title"><strong>Register</strong></div>
         </md-card-header>
+        <md-card-content class="md-layout md-alignment-space-around-center">
+          <md-field class="md-layout-item ">
+            <label for="email">Name</label>
+            <md-input type="text" name="name" id="name" v-model="form.name"/>
+           <!--  <span class="md-error" v-if="!$v.form.email.required">The email is required</span>
+            <span class="md-error" v-else-if="!$v.form.email.email">Invalid email</span> -->
 
+          </md-field>
+        </md-card-content>
         <md-card-content class="md-layout md-alignment-space-around-center">
           <md-field v-bind:class="{ 'md-invalid': error.userErr }" class="md-layout-item ">
             <label for="email">User Name</label>
             <md-input type="email" name="email" id="email" autocomplete="email" v-model="form.userName"/>
            <!--  <span class="md-error" v-if="!$v.form.email.required">The email is required</span>
             <span class="md-error" v-else-if="!$v.form.email.email">Invalid email</span> -->
-              <span class="md-error">{{ error.userErrMsg }}</span>
-
-          </md-field>
-        </md-card-content>
-
-        <md-card-content class="md-layout md-alignment-space-around-center" >
-          <md-field  v-bind:class="{ 'md-invalid': error.admNumErr}" class="md-layout-item "><!--  class="md-layout-item md-size-70 " -->
-            <label for="email">Admission Number</label>
-            <md-input type="email" name="email" id="email" autocomplete="email" v-model="form.admNum"/>
-           <!--  <span class="md-error" v-if="!$v.form.email.required">The email is required</span>
-            <span class="md-error" v-else-if="!$v.form.email.email">Invalid email</span> -->
-            <span class="md-error">{{ error.admNumErrMsg }}</span>
+          <span class="md-error">{{ error.userErrMsg }}</span>
           </md-field>
         </md-card-content>
 
@@ -37,20 +34,24 @@
         </md-card-content>
 
         <md-card-content class="md-layout md-alignment-space-around-center">
-          <md-field class="md-layout-item">
-          <label for="userType">User Type</label>
-          <md-select v-model="form.type" name="type" id="type">
-            <md-option value="student">Student</md-option>
-            <md-option value="teacher" disabled>Teacher</md-option>
-            <md-option value="other" disabled>Other</md-option>
-          </md-select>
-      
-            
-            
+          <md-field v-bind:class="{ 'md-invalid': error.emailErr }" class="md-layout-item ">
+            <label for="email">Email</label>
+            <md-input type="email" name="email" id="email" autocomplete="email" v-model="form.email"/>
            <!--  <span class="md-error" v-if="!$v.form.email.required">The email is required</span>
             <span class="md-error" v-else-if="!$v.form.email.email">Invalid email</span> -->
-          </md-field> 
+            <span class="md-error">{{ error.emailErrMsg }}</span>
+          </md-field>
         </md-card-content>
+
+        <md-card-content class="md-layout md-alignment-space-around-center">
+          <md-field class="md-layout-item ">
+            <label for="email">Phone Number</label>
+            <md-input type="number" name="phone" id="phone" autocomplete="email" v-model="form.phone"/>
+           <!--  <span class="md-error" v-if="!$v.form.email.required">The email is required</span>
+            <span class="md-error" v-else-if="!$v.form.email.email">Invalid email</span> -->
+          </md-field>
+        </md-card-content>
+        
 <!-- TEST COMMENT
  -->
 
@@ -72,14 +73,15 @@
       form: {
         userName:null,
         password:null,
-        admNum:null,
-        type:null
+        email:null,
+        phone:null,
+        name:null
       },
       error: {
-        admNumErr: false,
-        admNumErrMsg: null,
         userErr: false,
-        userErrMsg: null
+        userErrMsg: null,
+        emailErr: false,
+        emailErrMsg:null
       }
 
     }),
@@ -94,40 +96,44 @@
     methods: {
       submit:function(){
         // console.log(this.form);
-        this.error.admNumErr = false
+        this.error.emailErr = false
         this.error.userErr = false
         var self=this;
         axios({
           method:'post',
-          url:process.env.VUE_APP_ROOT_API+'auth/register',
+          url:process.env.VUE_APP_ROOT_API+'auth/join',
           data:{
             username:this.form.userName,
+            name:this.form.name,
             password:this.form.password,
-            admission_number:this.form.admNum,
-            type:this.form.type
+            email:this.form.email,
+            phone:this.form.phone
           }
         }).then(function(res){
-            if(res.data.success){
-              console.log(res);
+          console.log(res.data);
+          
+            if(res.data.Success){
+              //console.log(res);
               self.$emit('toggle')
+              self.$router.push({name:'verify',params:{username:res.data.username}})
             }
             else{
               self.form.userName = null
               self.form.password = null
-              self.form.admNum = null
-              self.form.type = null
-              if(res.data.message == "Incorrect admission number"){
-                console.log("Invalid admno");
-                self.error.admNumErr = true
-                self.error.admNumErrMsg = "Enter correct admission number"
-              }else if(res.data.message == "username already taken"){
+              self.form.email = null
+              self.form.phone = null
+              self.form.name = null
+              console.log(res.data.error)
+              if(res.data.error == "username already in use"){
+                console.log("Username already in use");
                 self.error.userErr = true
-                self.error.userErrMsg = res.data.message 
-              }else if(res.data.message == "Account exists for the admission number"){
-                self.error.admNumErr = true
-                self.error.admNumErrMsg = "Account exists for the admission number"
+                self.error.userErrMsg = res.data.error
+              }else if(res.data.error == "Email already in use"){
+                console.log("Email already in use");                
+                self.error.emailErr = true
+                self.error.emailErrMsg = res.data.error 
               }
-              console.log(res);
+              //console.log(res);
             }            
           }).catch((err)=>{
             console.log(err);

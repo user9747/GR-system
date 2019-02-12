@@ -20,4 +20,32 @@ peopleMethods.getPeopleByEmail = (info) => {
     })
 }
 
+peopleMethods.addPerson = (info)=>{
+    return new Promise((resolve, reject) => {
+        model.create(info)
+        .then((res) => {
+            resolve(res)
+        })
+        .catch((err) => {
+            reject(err);
+        })
+    })
+}
+
+peopleMethods.removePerson = (info) => {
+    return new Promise((resolve, reject) => {
+        model.destroy({
+            where:{
+                people_id: info.people_id
+            }
+        })
+        .then((res) => {
+            resolve(res)
+        })
+        .catch((err) => {
+            reject(err)
+        })
+    })
+}
+
 module.exports = peopleMethods

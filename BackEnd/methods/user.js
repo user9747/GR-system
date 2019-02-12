@@ -85,6 +85,25 @@ userMethods.addUser = (info)=>{
     })
 }
 
+userMethods.addNewUser = (info) => {
+    return new Promise((resolve, reject) => {
+        bcrypt.hash(info.password,10)
+        .then((hashPass) => {
+            info.password = hashPass
+            model.create(info)
+            .then((res) => {
+                resolve(res)
+            })
+            .catch((err) => {
+                reject(err)
+            })
+        })
+        .catch((err) => {          
+            reject(err)
+        })
+    })
+}
+
 userMethods.findUserByUsername = (info) => {
     return new Promise((resolve, reject) => {
         model.findOne({
@@ -110,6 +129,22 @@ userMethods.findUserByUserID = (info) => {
         })
         .then((user) => {
             resolve(user)
+        })
+        .catch((err) => {
+            reject(err)
+        })
+    })
+}
+
+userMethods.updateUser = (info) => {
+    return new Promise((resolve,reject) => {
+        model.update(info,{
+            where:{
+                user_id: info.user_id
+            }
+        })
+        .then((res) => {
+            resolve(res)
         })
         .catch((err) => {
             reject(err)

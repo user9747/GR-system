@@ -3,7 +3,8 @@ module.exports = (sequelize, DataTypes) => {
 		user_id:{ type: DataTypes.STRING, primaryKey: true ,allowNull:false},
 		people_id:{type: DataTypes.STRING,allowNull:false,unique:true},
 		user_name:{type: DataTypes.STRING,allowNull:false,unique:true,validate:{isAlphanumeric: true}},
-		password:{type: DataTypes.STRING,allowNull:false,unique:true}
+		password:{type: DataTypes.STRING,allowNull:false},
+		isVerified:{type: DataTypes.BOOLEAN,allowNull: false, defaultValue: false}
 	})
 
 	User.associate = (models) => {

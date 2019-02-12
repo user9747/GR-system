@@ -3,6 +3,10 @@ const router  = express.Router()
 const jwt = require('jsonwebtoken')
 const passport = require('passport')
 const userMethods = require('../../methods/user')
+const peopleMethods = require('../../methods/people')
+const studentMethods = require('../../methods/student')
+const verificationMethods = require('../../methods/verification')
+const uid = require('uniqid')
 const fs = require('fs')
 
 /* POST login. */
@@ -12,6 +16,13 @@ router.post('/login', function (req, res, next) {
         if (err || !user) {
             return res.json({
                 error: info.message
+            })
+        }
+
+        if(user.isVerified == false){
+            res.json({
+                "username":user.user_name,
+                "verified":false
             })
         }
 
@@ -32,7 +43,8 @@ router.post('/login', function (req, res, next) {
            return res.json({
                'username': user.user_name,
                'usertype': 'user',
-                'token': token
+                'token': token,
+                "verified":true
             })
         })
     })(req, res)
@@ -80,6 +92,163 @@ router.post('/register', function(req, res, next){
         })
     })
 
+})
+
+router.post('/join',(req,res,next) => {
+    var person = {}
+    person.people_id = uid();
+    person.name = req.body.name
+    person.role = 'user'
+    person.email = req.body.email
+    person.phone = req.body.phone
+    peopleMethods.addPerson(person)
+    .then((ppl) => {
+        var user = {}
+        user.user_name = req.body.username
+        user.password = req.body.password
+        user.user_id = uid(user.user_name)
+        user.people_id = ppl.people_id
+        user.isVerified = false
+        userMethods.addNewUser(user)
+        .then((user) => {
+            var ver_info = {
+                user_id: user.user_id
+            }
+            verificationMethods.createToken(ver_info)
+            .then((result) => {
+                res.json({
+                    "Success":true,
+                    "username":user.user_name
+                })
+            })
+            .catch((err) => {
+                res.json({
+                    "Success":false,
+                    "error":err.message
+                })
+            })
+            
+        })
+        .catch((err) => {
+            if(err.message == "Validation error"){
+                peopleMethods.removePerson(ppl)
+                .then((result) => {
+                    res.json({
+                        "Success":false,
+                        "error":"username already in use"
+                    })
+                })
+                .catch((err) => {
+                    res.json({
+                        "Success":false,
+                        "error":err.message
+                    })
+                })
+            }
+            else{
+                res.json({
+                    "Success":false,
+                    "error":err.message
+                })
+            }
+        })
+    })
+    .catch((err) => {
+        if(err.message == "Validation error"){
+            res.json({
+                "Success":false,
+                "error":"Email already in use"
+            })
+        }
+        else{
+            res.json({
+                "Success":false,
+                "error":err.message
+            })
+        }        
+    })
+
+})
+
+router.post('/verify',(req,res) => {
+    var info = {}
+    userMethods.findUserByUsername({
+        username: req.body.username
+    })
+    .then((user) => {
+        info.user_id = user.user_id
+        verificationMethods.returnToken(info)
+        .then((result) => {
+            if(result.verification_token == req.body.verification_token){
+                userMethods.updateUser({
+                    user_id: info.user_id,
+                    isVerified: true
+                })
+                .then((data) => {
+                    res.json({
+                        "Success":true
+                    })
+                })
+                .catch((err) => {
+                    res.json({
+                        "Success":false,
+                        "error":err.message
+                    })
+                })
+            }
+            else{
+                res.json({
+                    "Success":false,
+                    "error":"Incorrect verification token"
+                })
+            }
+        })
+        .catch((err) => {
+            res.json({
+                "Success":false,
+                "error":err.message
+            })
+        })
+    })
+    .catch((err) => {
+        res.json({
+            "Success":false,
+            "error":err.message
+        })
+    })
+})
+
+router.post('/studentinfo',(req,res) => {
+    var info = {
+        admission_no: req.body.admission_no,
+        department: req.body.department,
+        date_of_join: req.body.date,
+        course: req.body.course
+    }
+    userMethods.findUserByUsername({
+        username:req.body.username
+    })
+    .then((user) => {
+        info.people_id = user.people_id
+        studentMethods.addStudent(info)
+        .then((result) => {
+            res.json({
+                "Success":true
+            })
+        })
+        .catch((err) => {
+            res.json({
+                "Success":false,
+                "error":err.message
+            })
+        })    
+    })
+    .catch((err) => {
+        res.json({
+            "Success":false,
+            "error":err.message
+        })
+    })
 })
 
 router.post('/celllogin', function (req,res,next){

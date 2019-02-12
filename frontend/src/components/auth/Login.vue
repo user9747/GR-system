@@ -61,8 +61,6 @@
           self.$router.push('/dashboard')
         })
         .catch((err) => {
-          self.userName = null
-          self.password= null
           console.log(err.message);
           if(err.message == 'no such username'){
             self.error.userErr = true
@@ -80,6 +78,9 @@
               self.error.passErr = true
               self.error.passMsg = "Enter valid password"
             }
+          }
+          else if(err.message == "User not verified"){
+              self.$router.push({name: 'verify', params:{username:self.form.userName}})
           }
         })
       },
