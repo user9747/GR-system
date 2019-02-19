@@ -6,6 +6,7 @@ const userMethods = require('../../methods/user')
 const peopleMethods = require('../../methods/people')
 const studentMethods = require('../../methods/student')
 const verificationMethods = require('../../methods/verification')
+const mailer = require('../../middlewares/mail')
 const uid = require('uniqid')
 const fs = require('fs')
 
@@ -116,6 +117,11 @@ router.post('/join',(req,res,next) => {
             }
             verificationMethods.createToken(ver_info)
             .then((result) => {
+                mailer.Send({
+                    email:ppl.email,
+                    username:ppl.name,
+                    verification_token:result.verification_token
+                })
                 res.json({
                     "Success":true,
                     "username":user.user_name
