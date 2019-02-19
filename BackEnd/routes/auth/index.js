@@ -3,6 +3,7 @@ const router  = express.Router()
 const jwt = require('jsonwebtoken')
 const passport = require('passport')
 const userMethods = require('../../methods/user')
+const cellMethods = require('../../methods/cell')
 const peopleMethods = require('../../methods/people')
 const studentMethods = require('../../methods/student')
 const verificationMethods = require('../../methods/verification')
@@ -93,6 +94,70 @@ router.post('/register', function(req, res, next){
     })
 
 })
+
+router.post('/celljoin',(req,res,next) => {
+    var person = {}
+    person.people_id = uid();
+    person.name = req.body.name
+    person.role = 'user'
+    person.email = req.body.email
+    person.phone = req.body.phone
+    peopleMethods.addPerson(person)
+    .then((ppl) => {
+        var user = {}
+        user.user_name = req.body.username
+        user.password = req.body.password
+        user.cell_id = uid(user.user_name)
+        user.people_id = ppl.people_id
+        cellMethods.addNewUser(user)
+        .then((user) => {
+            res.json({
+                "Success":true,
+                "username":user.user_name
+            })
+            
+        })
+        .catch((err) => {
+            if(err.message == "Validation error"){
+                peopleMethods.removePerson(ppl)
+                .then((result) => {
+                    res.json({
+                        "Success":false,
+                        "error":"username already in use"
+                    })
+                })
+                .catch((err) => {
+                    res.json({
+                        "Success":false,
+                        "error":err.message
+                    })
+                })
+            }
+            else{
+                res.json({
+                    "Success":false,
+                    "error":err.message
+                })
+            }
+        })
+    })
+    .catch((err) => {
+        if(err.message == "Validation error"){
+            res.json({
+                "Success":false,
+                "error":"Email already in use"
+            })
+        }
+        else{
+            res.json({
+                "Success":false,
+                "error":err.message
+            })
+        }        
+    })
+
+})
+
 
 router.post('/join',(req,res,next) => {
     var person = {}
