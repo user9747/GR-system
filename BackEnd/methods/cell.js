@@ -13,6 +13,25 @@ const schema = Joi.object().keys({
     'email': Joi.string().required()
 })
 
+cellMethods.addNewUser = (info) => {
+    return new Promise((resolve, reject) => {
+        bcrypt.hash(info.password,10)
+        .then((hashPass) => {
+            info.password = hashPass
+            model.create(info)
+            .then((res) => {
+                resolve(res)
+            })
+            .catch((err) => {
+                reject(err)
+            })
+        })
+        .catch((err) => {          
+            reject(err)
+        })
+    })
+}
+
 cellMethods.addUser = (info) => {
     return new Promise((resolve,reject) => {
         Joi.validate(info, schema, (err, value) => {
