@@ -100,7 +100,7 @@ router.post('/celljoin',(req,res,next) => {
     var person = {}
     person.people_id = uid();
     person.name = req.body.name
-    person.role = 'user'
+    person.role = 'cell'
     person.email = req.body.email
     person.phone = req.body.phone
     peopleMethods.addPerson(person)
