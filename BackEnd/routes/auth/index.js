@@ -185,7 +185,8 @@ router.post('/join',(req,res,next) => {
                 mailer.Send({
                     email:ppl.email,
                     username:ppl.name,
-                    verification_token:result.verification_token
+                    subject: 'Verification token for Grievance Cell CET',
+                    content: 'Your verification token for Grievance Cell online portal is <b>'+result.verification_token+'</b><br /> For any assistance contact us at grievancecell@cet.ac.in',
                 })
                 res.json({
                     "Success":true,
@@ -193,9 +194,18 @@ router.post('/join',(req,res,next) => {
                 })
             })
             .catch((err) => {
-                res.json({
-                    "Success":false,
-                    "error":err.message
+                peopleMethods.removePerson(ppl)
+                .then((result) => {
+                    res.json({
+                        "Success":false,
+                        "error":err.message
+                    })
+                })
+                .catch((err) => {
+                    res.json({
+                        "Success":false,
+                        "error":err.message
+                    })
                 })
             })
             

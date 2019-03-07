@@ -3,6 +3,7 @@ const readline = require('readline');
 const {google} = require('googleapis');
 const credentials = require('../config/credentials')
 const token = require('../config/token')
+const Promise = require('bluebird')
 
 var EmailConfirmation = {};
 
@@ -27,10 +28,10 @@ function sendSampleMail(info, auth, cb) {
     email_lines.push('To: '+info.email);
     email_lines.push('Content-type: text/html;charset=iso-8859-1');
     email_lines.push('MIME-Version: 1.0');
-    email_lines.push('Subject: Your Verification Token for Grievance Cell Online Portal');
+    email_lines.push('Subject:' + info.subject);
     email_lines.push('');
     email_lines.push('Dear '+info.username+',<br/><br/>');
-    email_lines.push('Your verification token for Grievance Cell online portal is <b>'+info.verification_token+'</b>');
+    email_lines.push(info.content);//'Your verification token for Grievance Cell online portal is <b>'+info.verification_token+'</b>'
 
     var email = email_lines.join('\r\n').trim();
 

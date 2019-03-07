@@ -1,5 +1,6 @@
 const model = require('../models/').people
 const Promise = require('bluebird')
+const userMethods = require('./user')
 
 var peopleMethods = {}
 
@@ -41,6 +42,25 @@ peopleMethods.removePerson = (info) => {
         })
         .then((res) => {
             resolve(res)
+        })
+        .catch((err) => {
+            reject(err)
+        })
+    })
+}
+
+peopleMethods.getPeopleByUsername = (info) => {
+    return new Promise((resolve,reject) => {
+        userMethods.findUserByUsername(info)
+        .then((res) => {
+            model.findOne({
+                where:{
+                    people_id: res.people_id
+                }
+            })
+            .then((doc) => {
+                resolve(doc)
+            })
         })
         .catch((err) => {
             reject(err)

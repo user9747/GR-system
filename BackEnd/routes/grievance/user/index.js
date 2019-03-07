@@ -1,8 +1,10 @@
 const express = require('express')
 const router  = express.Router()
 const grMethods = require('../../../methods/grievance')
+const peopleMethods = require('../../../methods/people')
 const uid = require('uniqid')
 const multer  = require('multer')
+const mailer = require('../../../middlewares/mail')
 var path = require('path');
 var storage = multer.diskStorage(
     {
@@ -144,7 +146,7 @@ router.post('/submit',function(req,res){
  	else{
  		info.remark="No Remarks"
 	 } */
-	 info.remark = null
+	info.remark = null
  	info.username=req.body.user_name;
  	info.grievance_id= uid();
  	info.title = req.body.title;
@@ -158,10 +160,21 @@ router.post('/submit',function(req,res){
 
  	grMethods.createGrievance(info)
  	.then((data)=>{
- 		res.json({
- 			'success':true,
- 			'info':data
- 		})
+		peopleMethods.getPeopleByUsername({
+			username: info.username
+		})
+		.then((ppl) => {
+			mailer.Send({
+				email:ppl.email,
+				username:ppl.name,
+				subject: 'Your Grievance has been submitted',
+				content: 'Your grievance has been successfully submitted. You can track the progress of your grievance using the following token <b>'+data.token+'</b><br /> For any assistance contact us at grievancecell@cet.ac.in',
+			})
+			res.json({
+				'success':true,
+				'info':data
+			})
+		})
  	})
  	.catch((err)=>{
  		res.json({
