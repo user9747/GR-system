@@ -9,4 +9,11 @@ require('../middlewares/passport')
 router.use('/auth',authRouter)
 router.use('/grievance', grievRouter)
 
+router.get('/',(req,res) => {
+    res.json({
+        name:"Grievance Cell API",
+        version:1.0
+    })
+})
+
 module.exports = router;
