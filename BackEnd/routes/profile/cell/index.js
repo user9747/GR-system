@@ -1,7 +1,33 @@
 const express = require('express')
 const router = express.Router()
 const cellMethods = require('../../../methods/cell')
+const peopleMethods = require('../../../methods/people')
 const bcrypt = require('bcrypt')
+
+router.get('/getProfile', (req,res) => {
+    var info = {
+        username: req.body.username
+    }
+    cellMethods.getUserByUsername(info)
+    .then((cell) => {
+        info.people_id = cell.people_id
+        peopleMethods.getPeopleByID(info)
+        .then((people) => {
+            res.json({
+                success:true,
+                name:people.name,
+                email:people.email,
+                phone:people.phone
+            })
+        })
+    })
+    .catch((err) => {
+        res.json({
+            success:false,
+            err:err.message
+        })
+    })
+})
 
 router.post('/updateProfile', (req,res) => {
     var info = req.body.data
