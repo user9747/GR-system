@@ -139,6 +139,23 @@ export default {
   methods:{
       updateProfile:function(){
           console.log("updating.....")
+          var self=this
+          var data=self.form
+          var config={
+              headers: { 
+                  Authorization: "Bearer " + this.$store.getters.bearerToken
+               }
+            }
+            axios.post(process.env.VUE_APP_ROOT_API+'profile/cell/updateProfile',{data:data},config)
+            .then((res)=>{
+                console.log("saved ");
+                console.log(res.data.info);              
+                alert("Successfully saved");
+                self.showButton=true;
+            })
+            .catch((err)=>{
+                console.log(err);
+            })
       },
       changePassword:function(){
           console.log("changing.....")
