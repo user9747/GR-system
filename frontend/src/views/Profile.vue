@@ -165,6 +165,17 @@ export default {
             old: this.form.oldpassword,
             password: this.form.newpassword
         }
+        var config={
+            headers: { Authorization: "Bearer " + this.$store.getters.bearerToken }
+        }
+        axios.post(process.env.VUE_APP_ROOT_API+'profile/cell/updatepwd',data,config)
+            .then((res)=>{
+                console.log(res.data)
+                self.$router.push('/')
+            })
+            .catch((err)=>{
+                console.log(err);
+            })  
       }
   }
 }
