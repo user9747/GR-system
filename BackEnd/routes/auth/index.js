@@ -10,6 +10,7 @@ const verificationMethods = require('../../methods/verification')
 const mailer = require('../../middlewares/mail')
 const uid = require('uniqid')
 const fs = require('fs')
+const bcrypt = require('bcrypt')
 
 /* POST login. */
 router.post('/login', function (req, res, next) {
@@ -52,7 +53,7 @@ router.post('/login', function (req, res, next) {
     })(req, res)
 })
 
-router.post('/register', function(req, res, next){
+/* router.post('/register', function(req, res, next){
     var info = {}
     info.username = req.body.username
     info.password = req.body.password
@@ -94,7 +95,7 @@ router.post('/register', function(req, res, next){
         })
     })
 
-})
+}) */
 
 router.post('/celljoin',(req,res,next) => {
     var person = {}
@@ -356,5 +357,43 @@ router.post('/celllogin', function (req,res,next){
             })
         })
     })(req, res)
+})
+
+router.post('/changepwd',(req,res) => {
+    var info = {
+        username: req.body.username,
+        old: req.body.old,
+        password: req.body.password
+    }
+    cellMethods.getUserByUsername(info)
+    .then((cell) => {
+        bcrypt.compare(info.old,cell.password)
+        .then((val) => {            
+            if(val == true){
+                newinfo = {
+                    cell_id: cell.cell_id,
+                    password: info.password
+                }
+                cellMethods.updatePassword(newinfo)
+                .then((data) => {
+                    res.json({
+                        success:true
+                    })
+                })
+            }
+            else{
+                res.json({
+                    success:false,
+                    err:'Incorrect Password'
+                })
+            }
+        })
+    })
+    .catch((err) => {
+        res.json({
+            success:false,
+            err:err.message
+        })
+    })
 })
 module.exports = router

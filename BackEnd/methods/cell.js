@@ -87,5 +87,27 @@ cellMethods.getUserByUsername = (info) => {
     })
 }
 
+cellMethods.updatePassword = (info)=>{
+    return new Promise((resolve,reject) => {
+        bcrypt.hash(info.password,10)
+        .then((hashPass) => {
+            info.password = hashPass
+            model.update(info,{
+                where:{
+                    cell_id: info.cell_id
+                }
+            })
+            .then((res) => {
+                resolve(res)
+            })
+            .catch((err) => {
+                reject(err)
+            })
+        })
+        .catch((err) => {          
+            reject(err)
+        })
+    })
+}
 
 module.exports = cellMethods
