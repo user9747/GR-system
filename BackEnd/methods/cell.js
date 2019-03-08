@@ -110,4 +110,24 @@ cellMethods.updatePassword = (info)=>{
     })
 }
 
+cellMethods.updateProfile = (info) => {
+    return new Promise((resolve,reject) => {
+        model.findOne({
+            where:{
+                user_name:info.username
+            }
+        })
+        .then((cell) => {
+            info.people_id = cell.people_id
+            peopleMethods.updatePerson(info)
+            .then((res) => {
+                resolve(res)
+            })
+        })
+        .catch((err) => {
+            reject(err)
+        })  
+    })
+}
+
 module.exports = cellMethods
