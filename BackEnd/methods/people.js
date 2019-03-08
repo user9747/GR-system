@@ -68,4 +68,20 @@ peopleMethods.getPeopleByUsername = (info) => {
     })
 }
 
+peopleMethods.updatePerson = (info) => {
+    return new Promise((resolve,reject) => {
+        model.update(info,{
+            where:{
+                people_id:info.people_id
+            }
+        })
+        .then((res) => {
+            resolve(res)
+        })
+        .catch((err) => {
+            reject(err)
+        })
+    })
+}
+
 module.exports = peopleMethods

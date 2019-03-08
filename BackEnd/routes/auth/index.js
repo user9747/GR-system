@@ -359,7 +359,7 @@ router.post('/celllogin', function (req,res,next){
     })(req, res)
 })
 
-router.post('/changepwd',(req,res) => {
+/* router.post('/changepwd',(req,res) => {
     var info = {
         username: req.body.username,
         old: req.body.old,
@@ -395,5 +395,5 @@ router.post('/changepwd',(req,res) => {
             err:err.message
         })
     })
-})
+}) */
 module.exports = router
