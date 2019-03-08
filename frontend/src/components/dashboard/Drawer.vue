@@ -6,19 +6,20 @@
         </md-avatar>
       </md-toolbar>
       <md-list>
-          <a @click="route('')">
+          <a href="/#/dashboard" >
             <md-list-item>
               <md-icon>home</md-icon>
               <span class="md-list-item-text">Dashboard</span>
             </md-list-item>          
           </a>
-
+          <a href="/#/profile"  >
           <md-list-item>
             <md-icon>account_circle</md-icon>
             <span class="md-list-item-text">Profile</span>
           </md-list-item>
+          </a>
 
-          <a @click="route('contact')">
+          <a href="/#/contact" >
             <md-list-item>
             <md-icon>help</md-icon>
             <span class="md-list-item-text">Contact Us</span>
