@@ -14,6 +14,7 @@ import PendingCell from './views/PendingCell'
 import ResolveGR from './views/ResolveGR'
 import Contact from './views/Contact'
 import Verification from './views/Verification'
+import Profile from './views/Profile'
 import store from './store'
 
 Vue.use(Router)
@@ -93,11 +94,18 @@ const router =  new Router({
       path:'/contact',
       name:'contact',
       component: Contact
-    },{
+    },
+    {
       path:'/verify',
       name:'verify',
       props:true,
       component: Verification
+    },
+    {
+      path:'/profile',
+      name:'profile',
+      props:true,
+      component: Profile
     }
   ]
 })
