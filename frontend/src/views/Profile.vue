@@ -29,7 +29,7 @@
                         <div class="md-layout-item md-size-70 md-small-size-100">
                             <md-field>
                                 <label for="email">Email</label>
-                                <md-input disabled="true" name="email" id="email" v-model="form.email" />
+                                <md-input name="email" id="email" v-model="form.email" />
                             </md-field>
                         </div>
                          <div class="md-layout-item md-size-70 md-small-size-100">
@@ -126,7 +126,7 @@ export default {
   data: function(){
     return {
       form:{
-          username:"usertest",
+          username:this.$store.getters.userName,
           name:"hello",
           email:"email@email.com",
           phone:"7034240550",
@@ -177,6 +177,33 @@ export default {
                 console.log(err);
             })  
       }
+  },
+  mounted(){
+      console.log("Retrieving profile");
+        var self = this;
+        axios.get(process.env.VUE_APP_ROOT_API+'profile/cell/getProfile',{
+            params: {
+                username:this.$store.getters.userName
+            },
+            headers: { 
+                Authorization: "Bearer " + this.$store.getters.bearerToken 
+            }                
+        })
+        .then((res) => {
+            console.log(res.data);
+            
+            if(res.data.success){
+                self.form.name = res.data.name
+                self.form.email = res.data.email
+                self.form.phone = res.data.phone
+            }
+            else{
+                console.log("ERR "+res.data.error)
+            }
+        })
+        .catch((err) => {
+            console.log("ERR "+ err);            
+        })
   }
 }
 </script>

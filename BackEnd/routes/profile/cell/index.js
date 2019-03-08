@@ -6,7 +6,7 @@ const bcrypt = require('bcrypt')
 
 router.get('/getProfile', (req,res) => {
     var info = {
-        username: req.body.username
+        username: req.query.username
     }
     cellMethods.getUserByUsername(info)
     .then((cell) => {
