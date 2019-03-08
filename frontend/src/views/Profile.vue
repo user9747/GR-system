@@ -150,9 +150,8 @@ export default {
             axios.post(process.env.VUE_APP_ROOT_API+'profile/cell/updateProfile',{data:data},config)
             .then((res)=>{
                 console.log("saved ");
-                console.log(res.data.info);              
+                console.log(res);              
                 alert("Successfully saved");
-                self.showButton=true;
             })
             .catch((err)=>{
                 console.log(err);
