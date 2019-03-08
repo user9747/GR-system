@@ -21,6 +21,23 @@ peopleMethods.getPeopleByEmail = (info) => {
     })
 }
 
+peopleMethods.getPeopleByID = (info) => {
+    return new Promise((resolve,reject) => {
+        model.findOne({
+            'where':{
+                'people_id': info.people_id
+            }
+        })
+        .then((people) => {
+            resolve(people)
+        })
+        .catch((err) => {
+            console.log("Error caught in db access "+err.message);            
+            reject(err)
+        })
+    })
+}
+
 peopleMethods.addPerson = (info)=>{
     return new Promise((resolve, reject) => {
         model.create(info)

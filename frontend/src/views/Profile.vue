@@ -116,6 +116,7 @@
 <script>
   import Navbar from '@/components/dashboard/Navbar'
   import Drawer from '@/components/dashboard/Drawer'
+  import axios from 'axios'
 export default {
   name: 'dashboard',
   components:{
@@ -141,7 +142,13 @@ export default {
           console.log("updating.....")
       },
       changePassword:function(){
-          console.log("changing.....")
+        console.log("changing.....")
+        var self = this
+        var data = {
+            username: this.$store.getters.userName,
+            old: this.form.oldpassword,
+            password: this.form.newpassword
+        }
       }
   }
 }
