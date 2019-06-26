@@ -9,6 +9,7 @@
     <md-app-content>
       <UserDashboard v-if="$store.getters.usertype == 'user' " />
       <CellDashboard v-else-if="$store.getters.usertype == 'cell'" />
+      <AdminDashboard v-else-if="$store.getters.usertype == 'admin'" />
       <div v-else>
         <h1>
           Somethings Wrong. Please logout and login again
@@ -52,13 +53,15 @@
   import Drawer from '@/components/dashboard/Drawer'
   import UserDashboard from '@/components/dashboard/UserDashboard'
   import CellDashboard from '@/components/dashboard/CellDashboard'
+  import AdminDashboard from '@/components/dashboard/AdminDashboard'
 export default {
   name: 'dashboard',
   components:{
     Navbar,
     Drawer,
     UserDashboard,
-    CellDashboard
+    CellDashboard,
+    AdminDashboard
   },
   data: function(){
     return {
