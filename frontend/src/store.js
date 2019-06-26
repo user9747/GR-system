@@ -96,7 +96,7 @@ export default new Vuex.Store({
             localStorage.setItem("username",res.data.username)
             localStorage.setItem("token",res.data.token)
             commit(LOGIN_SUCCESS)
-            commit(setUserType,'cell')
+            commit(setUserType,res.data.usertype)
             resolve()
           }).catch((err)=>{
             console.log(err.message)
