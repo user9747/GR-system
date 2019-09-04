@@ -10,7 +10,7 @@ var storage = multer.diskStorage(
     {
         destination: function(req,file,cb){
 			console.log(req.user)
-			cb(null,path.join('./uploads/',req.user.user_name))
+			cb(null,path.join(__dirname+'/../../../uploads/',req.user.user_name))
 		} ,
         filename: function ( req, file, cb ) {
             //req.body is empty... here is where req.body.new_file_name doesn't exists

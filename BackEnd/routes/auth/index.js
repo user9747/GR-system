@@ -36,10 +36,11 @@ router.post('/login', function (req, res, next) {
 
            // generate a signed son web token with the contents of user object and return it in the response
            
-
+ 
            const token = jwt.sign({'user_name': user.user_name, 'usertype' : 'user' }, 'poda_albine_and_akhile_and_bilale')         
-           if(!fs.existsSync('./uploads/'+user.user_name)){
-                fs.mkdir('./uploads/'+user.user_name, { recursive: true }, (err) => {
+
+           if(!fs.existsSync(__dirname+'/../../uploads/'+user.user_name)){
+                fs.mkdir(__dirname+'/../../uploads/'+user.user_name, { recursive: true }, (err) => {
                     if (err) throw err;
                 });
            }
