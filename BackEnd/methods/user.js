@@ -2,6 +2,7 @@ const model = require('../models').user
 const uniqid = require('uniqid')
 const Promise = require('bluebird')
 const studentMethods = require('./student')
+const peopleMethods = require('./people')
 const Joi = require('joi')
 const bcrypt = require('bcrypt')
 
@@ -149,6 +150,26 @@ userMethods.updateUser = (info) => {
         .catch((err) => {
             reject(err)
         })
+    })
+}
+
+userMethods.updateProfile = (info) => {
+    return new Promise((resolve,reject) => {
+        model.findOne({
+            where:{
+                user_name:info.username
+            }
+        })
+        .then((user) => {
+            info.people_id = user.people_id
+            peopleMethods.updatePerson(info)
+            .then((res) => {
+                resolve(res)
+            })
+        })
+        .catch((err) => {
+            reject(err)
+        })  
     })
 }
 

@@ -97,6 +97,69 @@ router.post('/login', function (req, res, next) {
 
 }) */
 
+router.post('/joinadmin',(req,res,next) => {
+    var person = {}
+    person.people_id = uid();
+    person.name = req.body.name
+    person.role = 'admin'
+    person.email = req.body.email
+    person.phone = req.body.phone
+    peopleMethods.addPerson(person)
+    .then((ppl) => {
+        var user = {}
+        user.user_name = req.body.username
+        user.password = req.body.password
+        user.cell_id = uid(user.user_name)
+        user.people_id = ppl.people_id
+        cellMethods.addNewUser(user)
+        .then((user) => {
+            res.json({
+                "Success":true,
+                "username":user.user_name
+            })
+            
+        })
+        .catch((err) => {
+            if(err.message == "Validation error"){
+                peopleMethods.removePerson(ppl)
+                .then((result) => {
+                    res.json({
+                        "Success":false,
+                        "error":"username already in use"
+                    })
+                })
+                .catch((err) => {
+                    res.json({
+                        "Success":false,
+                        "error":err.message
+                    })
+                })
+            }
+            else{
+                res.json({
+                    "Success":false,
+                    "error":err.message
+                })
+            }
+        })
+    })
+    .catch((err) => {
+        if(err.message == "Validation error"){
+            res.json({
+                "Success":false,
+                "error":"Email already in use"
+            })
+        }
+        else{
+            res.json({
+                "Success":false,
+                "error":err.message
+            })
+        }        
+    })
+
+})
+
 router.post('/celljoin',(req,res,next) => {
     var person = {}
     person.people_id = uid();
@@ -348,13 +411,28 @@ router.post('/celllogin', function (req,res,next){
 
            // generate a signed son web token with the contents of user object and return it in the response
            
-
-           const token = jwt.sign({'user_name': user.user_name, 'usertype': 'cell' }, 'poda_albine_and_akhile_and_bilale')         
-           return res.json({
-               'username': user.user_name,
-               'usertype': 'cell',
-                'token': token
-            })
+           cellMethods.getUserByUsername({
+               username: user.user_name
+           })
+           .then((cell) => {
+               peopleMethods.getPeopleByID({
+                   people_id : cell.people_id
+               })
+               .then((ppl) => {
+                const token = jwt.sign({'user_name': user.user_name, 'usertype': ppl.role }, 'poda_albine_and_akhile_and_bilale')         
+                return res.json({
+                    'username': user.user_name,
+                    'usertype': ppl.role,
+                     'token': token
+                 })
+               })
+               .catch((err) => {
+                   res.send(err)
+               })
+           })
+           .catch((err) => {
+               res.send(err);
+           })
         })
     })(req, res)
 })
