@@ -2,7 +2,7 @@ const model = require('../models').user
 const uniqid = require('uniqid')
 const Promise = require('bluebird')
 const studentMethods = require('./student')
-const peopleMethods = require('./people')
+// const peopleMethods = require('./people')
 const Joi = require('joi')
 const bcrypt = require('bcrypt')
 
@@ -106,6 +106,7 @@ userMethods.addNewUser = (info) => {
 }
 
 userMethods.findUserByUsername = (info) => {
+    console.log("hellooooo"+info)
     return new Promise((resolve, reject) => {
         model.findOne({
             where: {
@@ -153,7 +154,7 @@ userMethods.updateUser = (info) => {
     })
 }
 
-userMethods.updateProfile = (info) => {
+/* userMethods.updateProfile = (info) => {
     return new Promise((resolve,reject) => {
         model.findOne({
             where:{
@@ -171,6 +172,6 @@ userMethods.updateProfile = (info) => {
             reject(err)
         })  
     })
-}
+} */
 
 module.exports = userMethods

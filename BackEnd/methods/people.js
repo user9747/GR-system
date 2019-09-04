@@ -82,6 +82,9 @@ peopleMethods.getPeopleByUsername = (info) => {
                 
                 resolve(doc)
             })
+            .catch((err) => {
+                reject(err)
+            })
         })
         .catch((err) => {
             reject(err)
@@ -104,5 +107,29 @@ peopleMethods.updatePerson = (info) => {
         })
     })
 }
+
+peopleMethods.updateProfile = (info) => {
+    return new Promise((resolve,reject) => {
+        userMethods.findUserByUsername({
+            where:{
+                user_name:info.username
+            }
+        })
+        .then((user) => {
+            model.update(info,{
+                where:{
+                    people_id:user.people_id
+                }
+            })
+            .then((res) => {
+                resolve(res)
+            })
+        })
+        .catch((err) => {
+            reject(err)
+        })  
+    })
+}
+
 
 module.exports = peopleMethods

@@ -110,7 +110,7 @@ cellMethods.updatePassword = (info)=>{
     })
 }
 
-cellMethods.updateProfile = (info) => {
+/* cellMethods.updateProfile = (info) => {
     return new Promise((resolve,reject) => {
         model.findOne({
             where:{
@@ -128,6 +128,6 @@ cellMethods.updateProfile = (info) => {
             reject(err)
         })  
     })
-}
+} */
 
 module.exports = cellMethods

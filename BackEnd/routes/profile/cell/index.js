@@ -31,7 +31,7 @@ router.get('/getProfile', (req,res) => {
 
 router.post('/updateProfile', (req,res) => {
     var info = req.body.data
-    cellMethods.updateProfile(info)
+    peopleMethods.updateProfile(info)
     .then((cell) => {
         res.json({
             success:true
