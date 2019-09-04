@@ -160,10 +160,12 @@ router.post('/submit',function(req,res){
 
  	grMethods.createGrievance(info)
  	.then((data)=>{
+		//  console.log(info)
 		peopleMethods.getPeopleByUsername({
 			username: info.username
 		})
 		.then((ppl) => {
+			console.log(ppl)
 			mailer.Send({
 				email:ppl.email,
 				username:ppl.name,

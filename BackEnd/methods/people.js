@@ -70,12 +70,16 @@ peopleMethods.getPeopleByUsername = (info) => {
     return new Promise((resolve,reject) => {
         userMethods.findUserByUsername(info)
         .then((res) => {
+            // console.log("res"+res);
+            
             model.findOne({
                 where:{
                     people_id: res.people_id
                 }
             })
             .then((doc) => {
+                // console.log("doc"+doc);
+                
                 resolve(doc)
             })
         })

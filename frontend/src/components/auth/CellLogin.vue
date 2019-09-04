@@ -85,11 +85,11 @@
           else if(err.message == 'Missing credentials'){
             if(self.userName == null){
               self.error.userErr = true
-              self.error.userMsg = "njangal entha pottanmaar ennano vicharam"
+              self.error.userMsg = "Missing credentials"
             }
             if(self.password == null){
               self.error.passErr = true
-              self.error.passMsg = "njangal entha pottanmaar ennano vicharam"
+              self.error.passMsg = "Missing credentials"
             }
           }
         })
