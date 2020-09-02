@@ -13,7 +13,7 @@
     "cors": "^2.8.4",
     "debug": "~2.6.9",
     "express": "~4.16.0",
-    "googleapis": "^27.0.0",
+    "googleapis": "^39.1.0",
     "hbs": "~4.0.1",
     "http-errors": "~1.6.2",
     "joi": "^13.6.0",
